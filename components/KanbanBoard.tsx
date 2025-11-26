@@ -200,6 +200,18 @@ const KanbanBoard: React.FC = () => {
               <h4 className="font-semibold text-slate-800 mb-2 pr-12 leading-tight">
                   {task.title}
               </h4>
+
+              {/* Planned Dates */}
+              {(task.plannedStartDate || task.plannedEndDate) && (
+                <div className="flex items-center gap-1.5 text-xs text-slate-400 mb-3">
+                    <Calendar className="w-3.5 h-3.5" />
+                    <span>
+                        {formatDate(task.plannedStartDate)} 
+                        {task.plannedStartDate && task.plannedEndDate && ' - '} 
+                        {formatDate(task.plannedEndDate)}
+                    </span>
+                </div>
+              )}
               
               <div className="flex items-center justify-between mt-3 pt-3 border-t border-slate-50">
                  <div className="flex items-center gap-2" title={task.developerName}>
@@ -297,6 +309,28 @@ const KanbanBoard: React.FC = () => {
                             value={newTask.description || ''}
                             onChange={e => setNewTask({...newTask, description: e.target.value})}
                         />
+                    </div>
+
+                    {/* Date Inputs - New for Sprint 2 */}
+                    <div className="grid grid-cols-2 gap-4">
+                        <div>
+                            <label className="block text-sm font-medium text-slate-700 mb-1">Planned Start</label>
+                            <input 
+                                type="date"
+                                className="w-full px-3 py-2 border border-slate-300 rounded-lg text-slate-900 focus:ring-2 focus:ring-indigo-500 outline-none"
+                                value={newTask.plannedStartDate || ''}
+                                onChange={e => setNewTask({...newTask, plannedStartDate: e.target.value})}
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-sm font-medium text-slate-700 mb-1">Planned End</label>
+                            <input 
+                                type="date"
+                                className="w-full px-3 py-2 border border-slate-300 rounded-lg text-slate-900 focus:ring-2 focus:ring-indigo-500 outline-none"
+                                value={newTask.plannedEndDate || ''}
+                                onChange={e => setNewTask({...newTask, plannedEndDate: e.target.value})}
+                            />
+                        </div>
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
