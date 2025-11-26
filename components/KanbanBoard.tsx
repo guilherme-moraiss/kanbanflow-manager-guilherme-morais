@@ -265,7 +265,7 @@ const KanbanBoard: React.FC = () => {
     <div className="h-full flex flex-col">
       <div className="flex justify-between items-center mb-6">
          <div>
-            <h2 className="text-lg font-bold text-slate-800">Sprint 2 Board</h2>
+            <h2 className="text-lg font-bold text-slate-800">Kanban Board</h2>
             <p className="text-sm text-slate-500">Drag cards to update status</p>
          </div>
          {user?.role === UserRole.MANAGER && (
