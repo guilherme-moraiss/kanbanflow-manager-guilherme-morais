@@ -137,15 +137,32 @@ router.patch('/:id/move', (req, res) => {
       return res.status(400).json({ error: 'Tarefas concluidas nao podem ser alteradas' });
     }
 
-    if (estado === 'DOING' && task.estado !== 'DOING') {
+    if (estado === 'DOING' || estado === 'DONE') {
       db.get(
-        'SELECT COUNT(*) as count FROM Tasks WHERE programadorId = ? AND estado = ?',
-        [task.programadorId, 'DOING'],
+        'SELECT COUNT(*) as count FROM Tasks WHERE programadorId = ? AND ordemExecucao < ? AND estado = ?',
+        [task.programadorId, task.ordemExecucao, 'TODO'],
         (err, result) => {
           if (err) return res.status(500).json({ error: err.message });
           
-          if (result.count >= 2) {
-            return res.status(400).json({ error: 'Maximo de 2 tarefas em execucao simultanea' });
+          if (result.count > 0) {
+            return res.status(400).json({ error: 'Deve executar tarefas pela ordem definida' });
+          }
+
+          if (estado === 'DOING' && task.estado !== 'DOING') {
+            db.get(
+              'SELECT COUNT(*) as count FROM Tasks WHERE programadorId = ? AND estado = ?',
+              [task.programadorId, 'DOING'],
+              (err, result) => {
+                if (err) return res.status(500).json({ error: err.message });
+                
+                if (result.count >= 2) {
+                  return res.status(400).json({ error: 'Maximo de 2 tarefas em execucao simultanea' });
+                }
+
+                continueMove();
+              }
+            );
+            return;
           }
 
           continueMove();
