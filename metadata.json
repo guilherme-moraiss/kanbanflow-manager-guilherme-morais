@@ -1,0 +1,5 @@
+{
+  "name": "KanbanFlow Manager Guilherme Morais",
+  "description": "A robust task management application featuring authentication, user role management, and Kanban workflows. Sprint 1 focuses on setup and user administration.",
+  "requestFramePermissions": []
+}
