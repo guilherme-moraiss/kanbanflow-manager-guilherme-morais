@@ -10,6 +10,7 @@ const KanbanBoard: React.FC = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   // Modal State
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -118,6 +119,8 @@ const KanbanBoard: React.FC = () => {
 
         setIsModalOpen(false);
         setNewTask({ storyPoints: 1, executionOrder: 1, developerId: '', taskTypeId: taskTypes[0]?.id });
+        setSuccessMessage('Task created successfully!');
+        setTimeout(() => setSuccessMessage(null), 3000);
         fetchBoardData();
     } catch (err: any) {
         setError(err.message);
@@ -280,6 +283,13 @@ const KanbanBoard: React.FC = () => {
         <div className="mb-4 p-4 bg-red-50 text-red-700 rounded-lg border border-red-100 flex items-center gap-2">
           <AlertCircle className="w-5 h-5" />
           {error}
+        </div>
+      )}
+
+      {successMessage && (
+        <div className="mb-4 p-4 bg-green-50 text-green-700 rounded-lg border border-green-100 flex items-center gap-2">
+          <AlertCircle className="w-5 h-5" />
+          {successMessage}
         </div>
       )}
 
