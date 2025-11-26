@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { UserRole } from '../types';
-import { LogOut, Users, Layout as LayoutIcon, Settings, Menu, Bell } from 'lucide-react';
+import { LogOut, Users, Layout as LayoutIcon, Settings, Menu, Bell, ClipboardList } from 'lucide-react';
 
 interface LayoutProps {
   children: ReactNode;
@@ -47,6 +47,19 @@ const Layout: React.FC<LayoutProps> = ({ children, activeTab, onNavigate }) => {
             >
               <LayoutIcon className={`w-5 h-5 ${activeTab === 'tasks' ? 'text-white' : 'text-slate-500 group-hover:text-white'}`} />
               <span className="font-medium">Task Board</span>
+            </button>
+
+          <button
+              type="button"
+              onClick={() => onNavigate('project')}
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 group ${
+                activeTab === 'project' 
+                  ? 'bg-indigo-600 text-white shadow-md shadow-indigo-900/20' 
+                  : 'text-slate-400 hover:bg-slate-800 hover:text-white'
+              }`}
+            >
+              <ClipboardList className={`w-5 h-5 ${activeTab === 'project' ? 'text-white' : 'text-slate-500 group-hover:text-white'}`} />
+              <span className="font-medium">Project Management</span>
             </button>
 
           {user?.role === UserRole.MANAGER && (
@@ -109,10 +122,14 @@ const Layout: React.FC<LayoutProps> = ({ children, activeTab, onNavigate }) => {
         <header className="bg-white border-b border-slate-200 px-8 py-5 flex justify-between items-center shadow-sm z-10">
           <div>
             <h2 className="text-2xl font-bold text-slate-800">
-                {activeTab === 'users' ? 'Team Management' : 'Task Board'}
+                {activeTab === 'users' ? 'Team Management' : activeTab === 'project' ? 'Project Management' : 'Task Board'}
             </h2>
             <p className="text-sm text-slate-500 mt-1">
-                {activeTab === 'users' ? 'Manage your development team and roles' : 'Track and organize tasks efficiently'}
+                {activeTab === 'users' 
+                  ? 'Manage your development team and roles' 
+                  : activeTab === 'project'
+                  ? 'Track sprints and project progress'
+                  : 'Track and organize tasks efficiently'}
             </p>
           </div>
           

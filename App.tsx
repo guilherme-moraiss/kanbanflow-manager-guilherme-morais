@@ -4,6 +4,7 @@ import Login from './components/Login';
 import Layout from './components/Layout';
 import UserManagement from './components/UserManagement';
 import KanbanBoard from './components/KanbanBoard';
+import ProjectManagement from './components/ProjectManagement';
 
 const AppContent: React.FC = () => {
   const { isAuthenticated } = useAuth();
@@ -17,6 +18,8 @@ const AppContent: React.FC = () => {
     <Layout activeTab={activeTab} onNavigate={setActiveTab}>
       {activeTab === 'users' ? (
         <UserManagement />
+      ) : activeTab === 'project' ? (
+        <ProjectManagement />
       ) : (
         <KanbanBoard />
       )}
