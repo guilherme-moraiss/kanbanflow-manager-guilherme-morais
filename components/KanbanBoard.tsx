@@ -71,13 +71,13 @@ const KanbanBoard: React.FC = () => {
     setTasks(updatedTasks);
 
     try {
-        await apiBackend.tasks.move(taskId, status);
-        // Refresh to get server-side updates (like dates)
+        if (!user) return;
+        await apiBackend.tasks.move(taskId, status, user);
         fetchBoardData();
-    } catch (err) {
+    } catch (err: any) {
         console.error("Move failed", err);
-        setTasks(originalTasks); // Revert
-        alert("Failed to move task.");
+        setTasks(originalTasks);
+        alert(err.message || "Failed to move task.");
     }
   };
 

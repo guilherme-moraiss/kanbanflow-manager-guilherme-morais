@@ -127,11 +127,15 @@ export const apiBackend = {
       };
     },
 
-    move: async (taskId: string, newStatus: TaskStatus): Promise<Task> => {
+    move: async (taskId: string, newStatus: TaskStatus, user: User): Promise<Task> => {
       const response = await fetch(`${API_URL}/tasks/${taskId}/move`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ estado: newStatus })
+        body: JSON.stringify({ 
+          estado: newStatus,
+          userId: user.id,
+          userRole: user.role
+        })
       });
       
       const task = await handleResponse(response);
