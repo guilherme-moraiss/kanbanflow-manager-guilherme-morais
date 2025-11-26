@@ -104,14 +104,7 @@ router.get('/', (req, res) => {
     LEFT JOIN TaskTypes tt ON t.tipoTarefaId = tt.id
   `;
 
-  let params = [];
-
-  if (userRole === 'MANAGER') {
-    query += ' WHERE t.gestorId = ?';
-    params.push(userId);
-  }
-
-  db.all(query, params, (err, tasks) => {
+  db.all(query, [], (err, tasks) => {
     if (err) return res.status(500).json({ error: err.message });
     res.json(tasks);
   });
