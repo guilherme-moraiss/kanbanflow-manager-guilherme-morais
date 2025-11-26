@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { api } from '../services/api';
+import { apiBackend } from '../services/apiBackend';
 import { User, UserRole, ExperienceLevel } from '../types';
 import Button from './Button';
 import { Plus, Edit2, Trash2, Search, User as UserIcon, X, CheckCircle } from 'lucide-react';
@@ -16,7 +16,7 @@ const UserManagement: React.FC = () => {
   const fetchUsers = async () => {
     try {
       setLoading(true);
-      const data = await api.users.getAll();
+      const data = await apiBackend.users.getAll();
       setUsers(data);
     } catch (err) {
       console.error(err);
@@ -37,13 +37,13 @@ const UserManagement: React.FC = () => {
 
     try {
       if (isEditing && currentUser.id) {
-        await api.users.update(currentUser.id, currentUser);
+        await apiBackend.users.update(currentUser.id, currentUser);
       } else {
         // Simple validation to satisfy type checker and logical constraints
         if (!currentUser.name || !currentUser.username || !currentUser.role || !currentUser.department) {
            throw new Error("Please fill in all required fields.");
         }
-        await api.users.create(currentUser as User);
+        await apiBackend.users.create(currentUser as User);
       }
       setIsModalOpen(false);
       fetchUsers();
@@ -75,7 +75,7 @@ const UserManagement: React.FC = () => {
   const handleDelete = async (id: string) => {
     if (!window.confirm('Are you sure you want to remove this user?')) return;
     try {
-      await api.users.delete(id);
+      await apiBackend.users.delete(id);
       fetchUsers();
     } catch (err) {
       console.error(err);

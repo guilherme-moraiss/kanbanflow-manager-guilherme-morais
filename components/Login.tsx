@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { api } from '../services/api';
+import { apiBackend } from '../services/apiBackend';
 import { useAuth } from '../context/AuthContext';
 import Button from './Button';
 import { Layout } from 'lucide-react';
@@ -18,7 +18,7 @@ const Login: React.FC = () => {
     setLoading(true);
 
     try {
-      const response = await api.auth.login(username, password);
+      const response = await apiBackend.auth.login(username, password);
       login(response.user, response.token);
     } catch (err: any) {
       setError(err.message || 'Login failed');

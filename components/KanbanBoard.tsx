@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { api } from '../services/api';
+import { apiBackend } from '../services/apiBackend';
 import { Task, TaskStatus, TaskType, User, UserRole } from '../types';
 import { useAuth } from '../context/AuthContext';
 import Button from './Button';
@@ -28,9 +28,9 @@ const KanbanBoard: React.FC = () => {
     setLoading(true);
     try {
       const [fetchedTasks, fetchedUsers, fetchedTypes] = await Promise.all([
-        api.tasks.getAll(user),
-        api.users.getAll(),
-        api.tasks.getTaskTypes()
+        apiBackend.tasks.getAll(user),
+        apiBackend.users.getAll(),
+        apiBackend.tasks.getTaskTypes()
       ]);
       
       setTasks(fetchedTasks);
@@ -70,7 +70,7 @@ const KanbanBoard: React.FC = () => {
     setTasks(updatedTasks);
 
     try {
-        await api.tasks.move(taskId, status);
+        await apiBackend.tasks.move(taskId, status);
         // Refresh to get server-side updates (like dates)
         fetchBoardData();
     } catch (err) {
@@ -92,7 +92,7 @@ const KanbanBoard: React.FC = () => {
     setTasks(tasks.filter(t => t.id !== taskId));
     
     try {
-        await api.tasks.delete(taskId);
+        await apiBackend.tasks.delete(taskId);
     } catch (err) {
         console.error("Delete failed", err);
         setTasks(originalTasks);
@@ -111,7 +111,7 @@ const KanbanBoard: React.FC = () => {
             throw new Error("Please fill in required fields");
         }
 
-        await api.tasks.create({
+        await apiBackend.tasks.create({
             ...newTask as any,
             status: TaskStatus.TODO
         }, user.id);
