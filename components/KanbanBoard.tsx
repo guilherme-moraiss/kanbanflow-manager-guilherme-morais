@@ -293,7 +293,7 @@ const KanbanBoard: React.FC = () => {
         </div>
       )}
 
-      <div className="grid grid-cols-4 gap-4 mb-6">
+      <div className="grid grid-cols-5 gap-4 mb-6">
         <div className="bg-white p-4 rounded-lg border border-slate-200 shadow-sm">
           <div className="text-xs text-slate-500 font-medium mb-1">Total Tasks</div>
           <div className="text-2xl font-bold text-slate-800">{tasks.length}</div>
@@ -309,6 +309,30 @@ const KanbanBoard: React.FC = () => {
         <div className="bg-white p-4 rounded-lg border border-slate-200 shadow-sm">
           <div className="text-xs text-slate-500 font-medium mb-1">Completed</div>
           <div className="text-2xl font-bold text-green-600">{tasks.filter(t => t.status === TaskStatus.DONE).length}</div>
+        </div>
+        <div className="bg-white p-4 rounded-lg border border-slate-200 shadow-sm">
+          <div className="text-xs text-slate-500 font-medium mb-1">Story Points</div>
+          <div className="text-2xl font-bold text-indigo-600">{tasks.reduce((sum, t) => sum + (t.storyPoints || 0), 0)}</div>
+        </div>
+      </div>
+
+      <div className="bg-white p-5 rounded-lg border border-slate-200 shadow-sm mb-6">
+        <div className="flex justify-between items-center mb-3">
+          <div>
+            <h3 className="text-sm font-semibold text-slate-700">Sprint Progress</h3>
+            <p className="text-xs text-slate-500 mt-0.5">
+              {tasks.filter(t => t.status === TaskStatus.DONE).length} of {tasks.length} tasks completed
+            </p>
+          </div>
+          <div className="text-2xl font-bold text-indigo-600">
+            {tasks.length > 0 ? Math.round((tasks.filter(t => t.status === TaskStatus.DONE).length / tasks.length) * 100) : 0}%
+          </div>
+        </div>
+        <div className="w-full bg-slate-100 rounded-full h-3">
+          <div 
+            className="bg-gradient-to-r from-indigo-500 to-indigo-600 h-3 rounded-full transition-all duration-500" 
+            style={{ width: `${tasks.length > 0 ? (tasks.filter(t => t.status === TaskStatus.DONE).length / tasks.length) * 100 : 0}%` }}
+          ></div>
         </div>
       </div>
 
