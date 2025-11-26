@@ -119,7 +119,7 @@ router.get('/', (req, res) => {
 
 router.patch('/:id/move', (req, res) => {
   const { id } = req.params;
-  const { estado } = req.body;
+  const { estado, userId, userRole } = req.body;
 
   if (!estado || !['TODO', 'DOING', 'DONE'].includes(estado)) {
     return res.status(400).json({ error: 'Estado inválido' });
@@ -128,6 +128,10 @@ router.patch('/:id/move', (req, res) => {
   db.get('SELECT * FROM Tasks WHERE id = ?', [id], (err, task) => {
     if (err) return res.status(500).json({ error: err.message });
     if (!task) return res.status(404).json({ error: 'Tarefa não encontrada' });
+
+    if (userRole === 'DEVELOPER' && task.programadorId !== userId) {
+      return res.status(403).json({ error: 'Apenas pode mover suas proprias tarefas' });
+    }
 
     const now = new Date().toISOString();
     let updates = { estado };
