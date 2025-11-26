@@ -133,6 +133,10 @@ router.patch('/:id/move', (req, res) => {
       return res.status(403).json({ error: 'Apenas pode mover suas proprias tarefas' });
     }
 
+    if (task.estado === 'DONE') {
+      return res.status(400).json({ error: 'Tarefas concluidas nao podem ser alteradas' });
+    }
+
     const now = new Date().toISOString();
     let updates = { estado };
 
