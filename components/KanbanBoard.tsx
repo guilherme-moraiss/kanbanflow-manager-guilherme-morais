@@ -293,6 +293,25 @@ const KanbanBoard: React.FC = () => {
         </div>
       )}
 
+      <div className="grid grid-cols-4 gap-4 mb-6">
+        <div className="bg-white p-4 rounded-lg border border-slate-200 shadow-sm">
+          <div className="text-xs text-slate-500 font-medium mb-1">Total Tasks</div>
+          <div className="text-2xl font-bold text-slate-800">{tasks.length}</div>
+        </div>
+        <div className="bg-white p-4 rounded-lg border border-slate-200 shadow-sm">
+          <div className="text-xs text-slate-500 font-medium mb-1">To Do</div>
+          <div className="text-2xl font-bold text-slate-600">{tasks.filter(t => t.status === TaskStatus.TODO).length}</div>
+        </div>
+        <div className="bg-white p-4 rounded-lg border border-slate-200 shadow-sm">
+          <div className="text-xs text-slate-500 font-medium mb-1">In Progress</div>
+          <div className="text-2xl font-bold text-blue-600">{tasks.filter(t => t.status === TaskStatus.DOING).length}</div>
+        </div>
+        <div className="bg-white p-4 rounded-lg border border-slate-200 shadow-sm">
+          <div className="text-xs text-slate-500 font-medium mb-1">Completed</div>
+          <div className="text-2xl font-bold text-green-600">{tasks.filter(t => t.status === TaskStatus.DONE).length}</div>
+        </div>
+      </div>
+
       <div className="flex-1 flex gap-6 overflow-x-auto pb-4">
         {renderColumn(TaskStatus.TODO, 'To Do')}
         {renderColumn(TaskStatus.DOING, 'Doing')}
