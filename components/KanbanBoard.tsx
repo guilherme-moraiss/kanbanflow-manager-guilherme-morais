@@ -276,6 +276,13 @@ const KanbanBoard: React.FC = () => {
          )}
       </div>
 
+      {error && (
+        <div className="mb-4 p-4 bg-red-50 text-red-700 rounded-lg border border-red-100 flex items-center gap-2">
+          <AlertCircle className="w-5 h-5" />
+          {error}
+        </div>
+      )}
+
       <div className="flex-1 flex gap-6 overflow-x-auto pb-4">
         {renderColumn(TaskStatus.TODO, 'To Do')}
         {renderColumn(TaskStatus.DOING, 'Doing')}
