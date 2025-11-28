@@ -39,6 +39,38 @@ const TaskTypeManagement: React.FC = () => {
     setIsModalOpen(true);
   };
 
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      if (isEditing && currentType.id) {
+        await apiBackend.tasks.updateTaskType(currentType.id, currentType);
+      } else {
+        await apiBackend.tasks.createTaskType(currentType as Omit<TaskType, 'id'>);
+      }
+      setIsModalOpen(false);
+      fetchTypes();
+    } catch (err) {
+      console.error(err);
+      alert('Failed to save task type');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    if (!window.confirm('Delete this task type?')) return;
+    
+    try {
+      await apiBackend.tasks.deleteTaskType(id);
+      fetchTypes();
+    } catch (err) {
+      console.error(err);
+      alert('Failed to delete');
+    }
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
@@ -72,6 +104,12 @@ const TaskTypeManagement: React.FC = () => {
                 >
                   <Edit2 className="w-4 h-4" />
                 </button>
+                <button
+                  onClick={() => handleDelete(type.id)}
+                  className="p-2 hover:bg-slate-100 rounded-lg text-slate-400 hover:text-red-600 transition-colors"
+                >
+                  <Trash2 className="w-4 h-4" />
+                </button>
               </div>
             </div>
             <h4 className="font-semibold text-slate-800 text-lg">{type.name}</h4>
@@ -92,7 +130,7 @@ const TaskTypeManagement: React.FC = () => {
               </button>
             </div>
             
-            <div className="p-6 space-y-4">
+            <form onSubmit={handleSubmit} className="p-6 space-y-4">
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-1">Name</label>
                 <input
@@ -126,9 +164,11 @@ const TaskTypeManagement: React.FC = () => {
 
               <div className="pt-4 flex justify-end gap-2">
                 <Button type="button" variant="ghost" onClick={() => setIsModalOpen(false)}>Cancel</Button>
-                <Button>Save</Button>
+                <Button type="submit" isLoading={loading}>
+                  {isEditing ? 'Update' : 'Create'}
+                </Button>
               </div>
-            </div>
+            </form>
           </div>
         </div>
       )}

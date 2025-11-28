@@ -61,6 +61,31 @@ export const apiBackend = {
       return handleResponse(response);
     },
 
+    createTaskType: async (taskType: Omit<TaskType, 'id'>): Promise<TaskType> => {
+      const response = await fetch(`${API_URL}/task-types`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(taskType)
+      });
+      return handleResponse(response);
+    },
+
+    updateTaskType: async (id: string, updates: Partial<TaskType>): Promise<TaskType> => {
+      const response = await fetch(`${API_URL}/task-types/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updates)
+      });
+      return handleResponse(response);
+    },
+
+    deleteTaskType: async (id: string): Promise<void> => {
+      const response = await fetch(`${API_URL}/task-types/${id}`, {
+        method: 'DELETE'
+      });
+      return handleResponse(response);
+    },
+
     getAll: async (currentUser: User): Promise<Task[]> => {
       const response = await fetch(
         `${API_URL}/tasks?userId=${currentUser.id}&userRole=${currentUser.role}`
