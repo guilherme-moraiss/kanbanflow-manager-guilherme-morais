@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const db = require('../database');
 const { v4: uuidv4 } = require('uuid');
+const bcrypt = require('bcryptjs');
 
 router.get('/', (req, res) => {
   db.all('SELECT id, name, username, role, experienceLevel, department, managerId, avatarUrl FROM Users', (err, users) => {
@@ -10,18 +11,25 @@ router.get('/', (req, res) => {
   });
 });
 
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
   const { name, username, password, role, experienceLevel, department, managerId } = req.body;
 
-  db.get('SELECT id FROM Users WHERE username = ?', [username], (err, existing) => {
-    if (err) return res.status(500).json({ error: err.message });
+  try {
+    const existing = await new Promise((resolve, reject) => {
+      db.get('SELECT id FROM Users WHERE username = ?', [username], (err, row) => {
+        if (err) reject(err);
+        else resolve(row);
+      });
+    });
+
     if (existing) return res.status(400).json({ error: 'Username já existe' });
 
+    const hashedPassword = await bcrypt.hash(password, 10);
     const id = uuidv4();
 
     db.run(
       'INSERT INTO Users (id, name, username, password, role, experienceLevel, department, managerId) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-      [id, name, username, password, role, experienceLevel, department, managerId || null],
+      [id, name, username, hashedPassword, role, experienceLevel, department, managerId || null],
       function (err) {
         if (err) return res.status(500).json({ error: err.message });
 
@@ -31,7 +39,9 @@ router.post('/', (req, res) => {
         });
       }
     );
-  });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });
 
 router.patch('/:id', (req, res) => {
