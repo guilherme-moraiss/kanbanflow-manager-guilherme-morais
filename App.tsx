@@ -7,6 +7,8 @@ import KanbanBoard from './components/KanbanBoard';
 import ProjectManagement from './components/ProjectManagement';
 import CompletedTasks from './components/CompletedTasks';
 import TaskTypeManagement from './components/TaskTypeManagement';
+import ManagerCompletedReport from './components/ManagerCompletedReport';
+import ManagerInProgressReport from './components/ManagerInProgressReport';
 
 const AppContent: React.FC = () => {
   const { isAuthenticated } = useAuth();
@@ -26,6 +28,10 @@ const AppContent: React.FC = () => {
         <CompletedTasks />
       ) : activeTab === 'tasktypes' ? (
         <TaskTypeManagement />
+      ) : activeTab === 'manager-completed' ? (
+        <ManagerCompletedReport />
+      ) : activeTab === 'manager-inprogress' ? (
+        <ManagerInProgressReport />
       ) : (
         <KanbanBoard />
       )}

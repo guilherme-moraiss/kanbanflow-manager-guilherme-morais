@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { UserRole } from '../types';
-import { LogOut, Users, Layout as LayoutIcon, Settings, Menu, Bell, ClipboardList, CheckCircle, Tag } from 'lucide-react';
+import { LogOut, Users, Layout as LayoutIcon, Settings, Menu, Bell, ClipboardList, CheckCircle, Tag, BarChart3, ListTodo } from 'lucide-react';
 
 interface LayoutProps {
   children: ReactNode;
@@ -107,6 +107,36 @@ const Layout: React.FC<LayoutProps> = ({ children, activeTab, onNavigate }) => {
               <Users className={`w-5 h-5 ${activeTab === 'users' ? 'text-white' : 'text-slate-500 group-hover:text-white'}`} />
               <span className="font-medium">User Management</span>
             </button>
+
+            <div className="mt-6 px-4 py-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                Reports
+            </div>
+
+            <button
+              type="button"
+              onClick={() => onNavigate('manager-completed')}
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 group ${
+                activeTab === 'manager-completed' 
+                  ? 'bg-indigo-600 text-white shadow-md shadow-indigo-900/20' 
+                  : 'text-slate-400 hover:bg-slate-800 hover:text-white'
+              }`}
+            >
+              <BarChart3 className={`w-5 h-5 ${activeTab === 'manager-completed' ? 'text-white' : 'text-slate-500 group-hover:text-white'}`} />
+              <span className="font-medium">Completed Tasks</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => onNavigate('manager-inprogress')}
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 group ${
+                activeTab === 'manager-inprogress' 
+                  ? 'bg-indigo-600 text-white shadow-md shadow-indigo-900/20' 
+                  : 'text-slate-400 hover:bg-slate-800 hover:text-white'
+              }`}
+            >
+              <ListTodo className={`w-5 h-5 ${activeTab === 'manager-inprogress' ? 'text-white' : 'text-slate-500 group-hover:text-white'}`} />
+              <span className="font-medium">Tasks In Progress</span>
+            </button>
             </>
           )}
         </nav>
@@ -155,9 +185,13 @@ const Layout: React.FC<LayoutProps> = ({ children, activeTab, onNavigate }) => {
                   : activeTab === 'project' 
                   ? 'Project Management' 
                   : activeTab === 'completed'
-                  ? 'Completed Tasks'
+                  ? 'My Completed Tasks'
                   : activeTab === 'tasktypes'
                   ? 'Task Types'
+                  : activeTab === 'manager-completed'
+                  ? 'Completed Tasks Report'
+                  : activeTab === 'manager-inprogress'
+                  ? 'Tasks In Progress'
                   : 'Task Board'}
             </h2>
             <p className="text-sm text-slate-500 mt-1">
@@ -169,6 +203,10 @@ const Layout: React.FC<LayoutProps> = ({ children, activeTab, onNavigate }) => {
                   ? 'View your completed tasks and performance'
                   : activeTab === 'tasktypes'
                   ? 'Manage task categories and types'
+                  : activeTab === 'manager-completed'
+                  ? 'Analyze completed tasks with planned vs real duration'
+                  : activeTab === 'manager-inprogress'
+                  ? 'Monitor ongoing tasks and deadlines'
                   : 'Track and organize tasks efficiently'}
             </p>
           </div>
