@@ -3,7 +3,7 @@ import { apiBackend } from '../services/apiBackend';
 import { Task, TaskStatus, TaskType, User, UserRole } from '../types';
 import { useAuth } from '../context/AuthContext';
 import Button from './Button';
-import { Plus, Calendar, User as UserIcon, AlertCircle, X, GripHorizontal, Trash2 } from 'lucide-react';
+import { Plus, Calendar, User as UserIcon, AlertCircle, X, GripHorizontal, Trash2, Clock, TrendingUp } from 'lucide-react';
 
 const KanbanBoard: React.FC = () => {
   const { user } = useAuth();
@@ -105,6 +105,32 @@ const KanbanBoard: React.FC = () => {
     });
     setIsEditMode(false);
     setIsViewModalOpen(true);
+  };
+
+  const isTaskLate = (task: Task): boolean => {
+    if (task.status === TaskStatus.DONE) return false;
+    if (!task.plannedEndDate) return false;
+    const today = new Date();
+    const plannedEnd = new Date(task.plannedEndDate);
+    return today > plannedEnd;
+  };
+
+  const getDaysLate = (task: Task): number => {
+    if (!task.plannedEndDate) return 0;
+    const today = new Date();
+    const plannedEnd = new Date(task.plannedEndDate);
+    const diffTime = today.getTime() - plannedEnd.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays > 0 ? diffDays : 0;
+  };
+
+  const getDaysInProgress = (task: Task): number => {
+    if (!task.realStartDate) return 0;
+    const today = new Date();
+    const startDate = new Date(task.realStartDate);
+    const diffTime = today.getTime() - startDate.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays >= 0 ? diffDays : 0;
   };
 
   const handleDeleteTask = async (taskId: string) => {
@@ -234,6 +260,21 @@ const KanbanBoard: React.FC = () => {
               <h4 className="font-semibold text-slate-800 mb-2 pr-12 leading-tight">
                   {task.title}
               </h4>
+
+              <div className="flex items-center gap-2 mb-2">
+                {isTaskLate(task) && (
+                  <div className="flex items-center gap-1.5 text-xs font-medium text-red-600 bg-red-50 px-2 py-1 rounded-md">
+                    <Clock className="w-3 h-3" />
+                    <span>{getDaysLate(task)}d late</span>
+                  </div>
+                )}
+                {task.status === TaskStatus.DOING && task.realStartDate && (
+                  <div className="flex items-center gap-1.5 text-xs font-medium text-blue-600 bg-blue-50 px-2 py-1 rounded-md">
+                    <TrendingUp className="w-3 h-3" />
+                    <span>{getDaysInProgress(task)}d in progress</span>
+                  </div>
+                )}
+              </div>
 
               {/* Planned Dates */}
               {(task.plannedStartDate || task.plannedEndDate) && (
