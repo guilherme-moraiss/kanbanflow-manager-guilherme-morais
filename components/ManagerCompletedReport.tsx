@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { apiBackend } from '../services/apiBackend';
 import { Task, TaskStatus } from '../types';
 import { useAuth } from '../context/AuthContext';
-import { CheckCircle, Clock, AlertCircle, TrendingUp, TrendingDown } from 'lucide-react';
+import { CheckCircle, Clock, AlertCircle, TrendingUp, TrendingDown, Download } from 'lucide-react';
+import Button from './Button';
 
 const ManagerCompletedReport: React.FC = () => {
   const { user } = useAuth();
@@ -52,6 +53,43 @@ const ManagerCompletedReport: React.FC = () => {
     return real - planned;
   };
 
+  const exportToCSV = () => {
+    const headers = [
+      'Programador',
+      'Descricao',
+      'DataPrevistaInicio',
+      'DataPrevistaFim',
+      'TipoTarefa',
+      'DataRealInicio',
+      'DataRealFim'
+    ];
+
+    const rows = completedTasks.map(task => [
+      task.developerName || 'Unassigned',
+      task.title,
+      task.plannedStartDate || '',
+      task.plannedEndDate || '',
+      task.taskTypeName,
+      task.realStartDate || '',
+      task.realEndDate || ''
+    ]);
+
+    const csvContent = [
+      headers.join(';'),
+      ...rows.map(row => row.join(';'))
+    ].join('\n');
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    link.setAttribute('href', url);
+    link.setAttribute('download', `completed_tasks_${new Date().toISOString().split('T')[0]}.csv`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   if (loading) {
     return (
       <div className="h-full flex items-center justify-center">
@@ -74,9 +112,17 @@ const ManagerCompletedReport: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h2 className="text-2xl font-bold text-slate-800">Completed Tasks Report</h2>
-        <p className="text-sm text-slate-500 mt-1">Overview of all completed tasks with planned vs real duration</p>
+      <div className="flex justify-between items-center">
+        <div>
+          <h2 className="text-2xl font-bold text-slate-800">Completed Tasks Report</h2>
+          <p className="text-sm text-slate-500 mt-1">Overview of all completed tasks with planned vs real duration</p>
+        </div>
+        {completedTasks.length > 0 && (
+          <Button onClick={exportToCSV}>
+            <Download className="w-4 h-4 mr-2" />
+            Export CSV
+          </Button>
+        )}
       </div>
 
       <div className="grid grid-cols-4 gap-4">
