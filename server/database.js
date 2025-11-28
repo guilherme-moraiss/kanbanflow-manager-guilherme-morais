@@ -1,5 +1,6 @@
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
+const bcrypt = require('bcryptjs');
 
 const dbPath = path.join(__dirname, 'kanban.db');
 const db = new sqlite3.Database(dbPath);
@@ -84,24 +85,25 @@ const initializeDatabase = () => {
       }
     ];
 
-    db.get('SELECT COUNT(*) as count FROM Users', (err, row) => {
+    db.get('SELECT COUNT(*) as count FROM Users', async (err, row) => {
       if (!err && row.count === 0) {
         const stmt = db.prepare('INSERT INTO Users VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)');
-        seedUsers.forEach(user => {
+        for (const user of seedUsers) {
+          const hashedPassword = await bcrypt.hash(user.password, 10);
           stmt.run(
             user.id,
             user.name,
             user.username,
-            user.password,
+            hashedPassword,
             user.role,
             user.experienceLevel,
             user.department,
             user.managerId,
             user.avatarUrl || null
           );
-        });
+        }
         stmt.finalize();
-        console.log('Users seeded');
+        console.log('Users seeded with hashed passwords');
       }
     });
 
