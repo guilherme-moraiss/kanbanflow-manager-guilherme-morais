@@ -16,6 +16,8 @@ const KanbanBoard: React.FC = () => {
 
   // Modal State
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
+  const [selectedTask, setSelectedTask] = useState<Task | null>(null);
   const [availableDevs, setAvailableDevs] = useState<User[]>([]);
   const [taskTypes, setTaskTypes] = useState<TaskType[]>([]);
   
@@ -87,10 +89,14 @@ const KanbanBoard: React.FC = () => {
     e.preventDefault();
   };
 
+  const handleViewTask = (task: Task) => {
+    setSelectedTask(task);
+    setIsViewModalOpen(true);
+  };
+
   const handleDeleteTask = async (taskId: string) => {
     if (!window.confirm("Are you sure you want to delete this task?")) return;
     
-    // Optimistic remove
     const originalTasks = [...tasks];
     setTasks(tasks.filter(t => t.id !== taskId));
     
@@ -174,7 +180,8 @@ const KanbanBoard: React.FC = () => {
               key={task.id}
               draggable
               onDragStart={(e) => handleDragStart(e, task.id)}
-              className="bg-white p-4 rounded-lg shadow-sm border border-slate-200 cursor-move hover:shadow-md transition-shadow group relative"
+              onClick={() => handleViewTask(task)}
+              className="bg-white p-4 rounded-lg shadow-sm border border-slate-200 cursor-pointer hover:shadow-md transition-shadow group relative"
             >
               {/* Card Actions */}
               <div className="absolute top-3 right-3 flex items-center gap-2">
@@ -506,6 +513,106 @@ const KanbanBoard: React.FC = () => {
                     </div>
                 </form>
            </div>
+        </div>
+      )}
+
+      {isViewModalOpen && selectedTask && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden">
+            <div className="px-6 py-5 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
+              <h3 className="text-lg font-bold text-slate-800">Task Details</h3>
+              <button onClick={() => setIsViewModalOpen(false)} className="text-slate-400 hover:text-slate-600">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            
+            <div className="p-6 space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-slate-500 mb-1">Title</label>
+                <div className="text-slate-900 font-medium">{selectedTask.title}</div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-slate-500 mb-1">Description</label>
+                <div className="text-slate-700">{selectedTask.description || '-'}</div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-slate-500 mb-1">Type</label>
+                  <div className="text-slate-900">{selectedTask.taskTypeName}</div>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-500 mb-1">Story Points</label>
+                  <div className="text-slate-900 font-mono">{selectedTask.storyPoints}</div>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-slate-500 mb-1">Developer</label>
+                  <div className="text-slate-900">{selectedTask.developerName || 'Unassigned'}</div>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-500 mb-1">Manager</label>
+                  <div className="text-slate-900">{selectedTask.managerName}</div>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-slate-500 mb-1">Planned Start</label>
+                  <div className="text-slate-900 text-sm">
+                    {selectedTask.plannedStartDate ? new Date(selectedTask.plannedStartDate).toLocaleDateString() : '-'}
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-500 mb-1">Planned End</label>
+                  <div className="text-slate-900 text-sm">
+                    {selectedTask.plannedEndDate ? new Date(selectedTask.plannedEndDate).toLocaleDateString() : '-'}
+                  </div>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-slate-500 mb-1">Real Start</label>
+                  <div className="text-slate-900 text-sm">
+                    {selectedTask.realStartDate ? new Date(selectedTask.realStartDate).toLocaleDateString() : '-'}
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-500 mb-1">Real End</label>
+                  <div className="text-slate-900 text-sm">
+                    {selectedTask.realEndDate ? new Date(selectedTask.realEndDate).toLocaleDateString() : '-'}
+                  </div>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-slate-500 mb-1">Status</label>
+                  <div>
+                    <span className={`inline-block px-3 py-1 text-sm font-medium rounded-full ${
+                      selectedTask.status === TaskStatus.TODO ? 'bg-slate-100 text-slate-700' :
+                      selectedTask.status === TaskStatus.DOING ? 'bg-blue-100 text-blue-700' :
+                      'bg-green-100 text-green-700'
+                    }`}>
+                      {selectedTask.status}
+                    </span>
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-500 mb-1">Execution Order</label>
+                  <div className="text-slate-900 font-mono">{selectedTask.executionOrder}</div>
+                </div>
+              </div>
+
+              <div className="pt-4 flex justify-end">
+                <Button onClick={() => setIsViewModalOpen(false)}>Close</Button>
+              </div>
+            </div>
+          </div>
         </div>
       )}
     </div>
