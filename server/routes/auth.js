@@ -2,6 +2,9 @@ const express = require('express');
 const router = express.Router();
 const db = require('../database');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+
+const JWT_SECRET = process.env.JWT_SECRET || 'kanbanflow-secret-key-2025';
 
 router.post('/login', async (req, res) => {
   const { username, password } = req.body;
@@ -29,8 +32,19 @@ router.post('/login', async (req, res) => {
     }
 
     const { password: _, ...safeUser } = user;
+    
+    const token = jwt.sign(
+      { 
+        userId: user.id, 
+        username: user.username,
+        role: user.role 
+      },
+      JWT_SECRET,
+      { expiresIn: '24h' }
+    );
+    
     res.json({
-      token: 'fake-jwt-token-' + Date.now(),
+      token,
       user: safeUser
     });
   } catch (error) {
