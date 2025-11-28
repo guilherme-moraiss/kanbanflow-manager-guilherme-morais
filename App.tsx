@@ -6,6 +6,7 @@ import UserManagement from './components/UserManagement';
 import KanbanBoard from './components/KanbanBoard';
 import ProjectManagement from './components/ProjectManagement';
 import CompletedTasks from './components/CompletedTasks';
+import TaskTypeManagement from './components/TaskTypeManagement';
 
 const AppContent: React.FC = () => {
   const { isAuthenticated } = useAuth();
@@ -23,6 +24,8 @@ const AppContent: React.FC = () => {
         <ProjectManagement />
       ) : activeTab === 'completed' ? (
         <CompletedTasks />
+      ) : activeTab === 'tasktypes' ? (
+        <TaskTypeManagement />
       ) : (
         <KanbanBoard />
       )}

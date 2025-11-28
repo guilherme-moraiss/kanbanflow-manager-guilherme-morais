@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { UserRole } from '../types';
-import { LogOut, Users, Layout as LayoutIcon, Settings, Menu, Bell, ClipboardList, CheckCircle } from 'lucide-react';
+import { LogOut, Users, Layout as LayoutIcon, Settings, Menu, Bell, ClipboardList, CheckCircle, Tag } from 'lucide-react';
 
 interface LayoutProps {
   children: ReactNode;
@@ -84,6 +84,19 @@ const Layout: React.FC<LayoutProps> = ({ children, activeTab, onNavigate }) => {
             </div>
             <button
               type="button"
+              onClick={() => onNavigate('tasktypes')}
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 group ${
+                activeTab === 'tasktypes' 
+                  ? 'bg-indigo-600 text-white shadow-md shadow-indigo-900/20' 
+                  : 'text-slate-400 hover:bg-slate-800 hover:text-white'
+              }`}
+            >
+              <Tag className={`w-5 h-5 ${activeTab === 'tasktypes' ? 'text-white' : 'text-slate-500 group-hover:text-white'}`} />
+              <span className="font-medium">Task Types</span>
+            </button>
+
+            <button
+              type="button"
               onClick={() => onNavigate('users')}
               className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 group ${
                 activeTab === 'users' 
@@ -143,6 +156,8 @@ const Layout: React.FC<LayoutProps> = ({ children, activeTab, onNavigate }) => {
                   ? 'Project Management' 
                   : activeTab === 'completed'
                   ? 'Completed Tasks'
+                  : activeTab === 'tasktypes'
+                  ? 'Task Types'
                   : 'Task Board'}
             </h2>
             <p className="text-sm text-slate-500 mt-1">
@@ -152,6 +167,8 @@ const Layout: React.FC<LayoutProps> = ({ children, activeTab, onNavigate }) => {
                   ? 'Track sprints and project progress'
                   : activeTab === 'completed'
                   ? 'View your completed tasks and performance'
+                  : activeTab === 'tasktypes'
+                  ? 'Manage task categories and types'
                   : 'Track and organize tasks efficiently'}
             </p>
           </div>
