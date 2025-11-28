@@ -17,7 +17,9 @@ const KanbanBoard: React.FC = () => {
   // Modal State
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
+  const [editTask, setEditTask] = useState<Partial<Task>>({});
   const [availableDevs, setAvailableDevs] = useState<User[]>([]);
   const [taskTypes, setTaskTypes] = useState<TaskType[]>([]);
   
@@ -91,6 +93,17 @@ const KanbanBoard: React.FC = () => {
 
   const handleViewTask = (task: Task) => {
     setSelectedTask(task);
+    setEditTask({
+      title: task.title,
+      description: task.description,
+      storyPoints: task.storyPoints,
+      executionOrder: task.executionOrder,
+      developerId: task.developerId,
+      taskTypeId: task.taskTypeId,
+      plannedStartDate: task.plannedStartDate,
+      plannedEndDate: task.plannedEndDate
+    });
+    setIsEditMode(false);
     setIsViewModalOpen(true);
   };
 

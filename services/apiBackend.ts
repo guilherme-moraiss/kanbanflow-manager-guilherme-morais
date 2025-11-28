@@ -182,6 +182,51 @@ export const apiBackend = {
       };
     },
 
+    update: async (taskId: string, taskData: Partial<Task>, userRole: string): Promise<Task> => {
+      const payload: any = {
+        userRole
+      };
+
+      if (taskData.title !== undefined) payload.titulo = taskData.title;
+      if (taskData.description !== undefined) payload.descricao = taskData.description;
+      if (taskData.storyPoints !== undefined) payload.storyPoints = taskData.storyPoints;
+      if (taskData.plannedStartDate !== undefined) payload.dataPrevistaInicio = taskData.plannedStartDate;
+      if (taskData.plannedEndDate !== undefined) payload.dataPrevistaFim = taskData.plannedEndDate;
+      if (taskData.executionOrder !== undefined) payload.ordemExecucao = taskData.executionOrder;
+      if (taskData.developerId !== undefined) payload.programadorId = taskData.developerId;
+      if (taskData.taskTypeId !== undefined) payload.tipoTarefaId = taskData.taskTypeId;
+
+      const response = await fetch(`${API_URL}/tasks/${taskId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      const task = await handleResponse(response);
+
+      return {
+        id: task.id,
+        title: task.titulo,
+        description: task.descricao,
+        storyPoints: task.storyPoints,
+        plannedStartDate: task.dataPrevistaInicio,
+        plannedEndDate: task.dataPrevistaFim,
+        executionOrder: task.ordemExecucao,
+        status: task.estado,
+        createdDate: task.dataCriacao,
+        realStartDate: task.dataRealInicio,
+        realEndDate: task.dataRealFim,
+        developerId: task.programadorId,
+        developerName: task.programadorNome,
+        developerAvatar: task.programadorAvatar,
+        managerId: task.gestorId,
+        managerName: task.gestorNome,
+        taskTypeName: task.tipoTarefaNome,
+        taskTypeColor: task.tipoTarefaCor,
+        taskTypeId: task.tipoTarefaId
+      };
+    },
+
     delete: async (id: string): Promise<void> => {
       const response = await fetch(`${API_URL}/tasks/${id}`, {
         method: 'DELETE'
