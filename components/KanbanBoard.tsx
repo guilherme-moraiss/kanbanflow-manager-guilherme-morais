@@ -533,97 +533,214 @@ const KanbanBoard: React.FC = () => {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
           <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden">
             <div className="px-6 py-5 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
-              <h3 className="text-lg font-bold text-slate-800">Task Details</h3>
-              <button onClick={() => setIsViewModalOpen(false)} className="text-slate-400 hover:text-slate-600">
-                <X className="w-5 h-5" />
-              </button>
+              <h3 className="text-lg font-bold text-slate-800">
+                {isEditMode ? 'Edit Task' : 'Task Details'}
+              </h3>
+              <div className="flex items-center gap-2">
+                {!isEditMode && user?.role === UserRole.MANAGER && selectedTask.status !== TaskStatus.DONE && (
+                  <button
+                    onClick={() => setIsEditMode(true)}
+                    className="px-3 py-1.5 text-sm bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
+                  >
+                    Edit
+                  </button>
+                )}
+                <button onClick={() => { setIsViewModalOpen(false); setIsEditMode(false); }} className="text-slate-400 hover:text-slate-600">
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
             </div>
             
             <div className="p-6 space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-slate-500 mb-1">Title</label>
-                <div className="text-slate-900 font-medium">{selectedTask.title}</div>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-slate-500 mb-1">Description</label>
-                <div className="text-slate-700">{selectedTask.description || '-'}</div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-slate-500 mb-1">Type</label>
-                  <div className="text-slate-900">{selectedTask.taskTypeName}</div>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-slate-500 mb-1">Story Points</label>
-                  <div className="text-slate-900 font-mono">{selectedTask.storyPoints}</div>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-slate-500 mb-1">Developer</label>
-                  <div className="text-slate-900">{selectedTask.developerName || 'Unassigned'}</div>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-slate-500 mb-1">Manager</label>
-                  <div className="text-slate-900">{selectedTask.managerName}</div>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-slate-500 mb-1">Planned Start</label>
-                  <div className="text-slate-900 text-sm">
-                    {selectedTask.plannedStartDate ? new Date(selectedTask.plannedStartDate).toLocaleDateString() : '-'}
-                  </div>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-slate-500 mb-1">Planned End</label>
-                  <div className="text-slate-900 text-sm">
-                    {selectedTask.plannedEndDate ? new Date(selectedTask.plannedEndDate).toLocaleDateString() : '-'}
-                  </div>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-slate-500 mb-1">Real Start</label>
-                  <div className="text-slate-900 text-sm">
-                    {selectedTask.realStartDate ? new Date(selectedTask.realStartDate).toLocaleDateString() : '-'}
-                  </div>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-slate-500 mb-1">Real End</label>
-                  <div className="text-slate-900 text-sm">
-                    {selectedTask.realEndDate ? new Date(selectedTask.realEndDate).toLocaleDateString() : '-'}
-                  </div>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-slate-500 mb-1">Status</label>
+              {!isEditMode ? (
+                <>
                   <div>
-                    <span className={`inline-block px-3 py-1 text-sm font-medium rounded-full ${
-                      selectedTask.status === TaskStatus.TODO ? 'bg-slate-100 text-slate-700' :
-                      selectedTask.status === TaskStatus.DOING ? 'bg-blue-100 text-blue-700' :
-                      'bg-green-100 text-green-700'
-                    }`}>
-                      {selectedTask.status}
-                    </span>
+                    <label className="block text-sm font-medium text-slate-500 mb-1">Title</label>
+                    <div className="text-slate-900 font-medium">{selectedTask.title}</div>
                   </div>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-slate-500 mb-1">Execution Order</label>
-                  <div className="text-slate-900 font-mono">{selectedTask.executionOrder}</div>
-                </div>
-              </div>
-
-              <div className="pt-4 flex justify-end">
-                <Button onClick={() => setIsViewModalOpen(false)}>Close</Button>
-              </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-500 mb-1">Description</label>
+                    <div className="text-slate-700">{selectedTask.description || '-'}</div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-slate-500 mb-1">Type</label>
+                      <div className="text-slate-900">{selectedTask.taskTypeName}</div>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-slate-500 mb-1">Story Points</label>
+                      <div className="text-slate-900 font-mono">{selectedTask.storyPoints}</div>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-slate-500 mb-1">Developer</label>
+                      <div className="text-slate-900">{selectedTask.developerName || 'Unassigned'}</div>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-slate-500 mb-1">Manager</label>
+                      <div className="text-slate-900">{selectedTask.managerName}</div>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-slate-500 mb-1">Planned Start</label>
+                      <div className="text-slate-900 text-sm">
+                        {selectedTask.plannedStartDate ? new Date(selectedTask.plannedStartDate).toLocaleDateString() : '-'}
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-slate-500 mb-1">Planned End</label>
+                      <div className="text-slate-900 text-sm">
+                        {selectedTask.plannedEndDate ? new Date(selectedTask.plannedEndDate).toLocaleDateString() : '-'}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-slate-500 mb-1">Real Start</label>
+                      <div className="text-slate-900 text-sm">
+                        {selectedTask.realStartDate ? new Date(selectedTask.realStartDate).toLocaleDateString() : '-'}
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-slate-500 mb-1">Real End</label>
+                      <div className="text-slate-900 text-sm">
+                        {selectedTask.realEndDate ? new Date(selectedTask.realEndDate).toLocaleDateString() : '-'}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-slate-500 mb-1">Status</label>
+                      <div>
+                        <span className={`inline-block px-3 py-1 text-sm font-medium rounded-full ${
+                          selectedTask.status === TaskStatus.TODO ? 'bg-slate-100 text-slate-700' :
+                          selectedTask.status === TaskStatus.DOING ? 'bg-blue-100 text-blue-700' :
+                          'bg-green-100 text-green-700'
+                        }`}>
+                          {selectedTask.status}
+                        </span>
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-slate-500 mb-1">Execution Order</label>
+                      <div className="text-slate-900 font-mono">{selectedTask.executionOrder}</div>
+                    </div>
+                  </div>
+                  <div className="pt-4 flex justify-end">
+                    <Button onClick={() => setIsViewModalOpen(false)}>Close</Button>
+                  </div>
+                </>
+              ) : (
+                <form onSubmit={async (e) => {
+                  e.preventDefault();
+                  if (!user) return;
+                  setLoading(true);
+                  try {
+                    await apiBackend.tasks.update(selectedTask.id, editTask, user.role);
+                    setIsViewModalOpen(false);
+                    setIsEditMode(false);
+                    fetchData();
+                  } catch (err: any) {
+                    alert(err.message || 'Failed to update task');
+                  } finally {
+                    setLoading(false);
+                  }
+                }}>
+                  <div className="space-y-4">
+                    <div>
+                      <label className="block text-sm font-medium text-slate-700 mb-1">Title</label>
+                      <input
+                        required
+                        type="text"
+                        className="w-full px-3 py-2 border border-slate-300 rounded-lg text-slate-900"
+                        value={editTask.title || ''}
+                        onChange={e => setEditTask({...editTask, title: e.target.value})}
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-slate-700 mb-1">Description</label>
+                      <textarea
+                        className="w-full px-3 py-2 border border-slate-300 rounded-lg text-slate-900"
+                        rows={3}
+                        value={editTask.description || ''}
+                        onChange={e => setEditTask({...editTask, description: e.target.value})}
+                      />
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium text-slate-700 mb-1">Type</label>
+                        <select
+                          className="w-full px-3 py-2 border border-slate-300 rounded-lg text-slate-900 bg-white"
+                          value={editTask.taskTypeId}
+                          onChange={e => setEditTask({...editTask, taskTypeId: e.target.value})}
+                        >
+                          {taskTypes.map(t => (
+                            <option key={t.id} value={t.id}>{t.name}</option>
+                          ))}
+                        </select>
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-slate-700 mb-1">Story Points</label>
+                        <input
+                          type="number"
+                          min="1"
+                          className="w-full px-3 py-2 border border-slate-300 rounded-lg text-slate-900"
+                          value={editTask.storyPoints || 1}
+                          onChange={e => setEditTask({...editTask, storyPoints: parseInt(e.target.value)})}
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-slate-700 mb-1">Developer</label>
+                      <select
+                        className="w-full px-3 py-2 border border-slate-300 rounded-lg text-slate-900 bg-white"
+                        value={editTask.developerId}
+                        onChange={e => setEditTask({...editTask, developerId: e.target.value})}
+                      >
+                        {availableDevs.map(dev => (
+                          <option key={dev.id} value={dev.id}>{dev.name}</option>
+                        ))}
+                      </select>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium text-slate-700 mb-1">Planned Start</label>
+                        <input
+                          type="date"
+                          className="w-full px-3 py-2 border border-slate-300 rounded-lg text-slate-900"
+                          value={editTask.plannedStartDate || ''}
+                          onChange={e => setEditTask({...editTask, plannedStartDate: e.target.value})}
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-slate-700 mb-1">Planned End</label>
+                        <input
+                          type="date"
+                          className="w-full px-3 py-2 border border-slate-300 rounded-lg text-slate-900"
+                          value={editTask.plannedEndDate || ''}
+                          onChange={e => setEditTask({...editTask, plannedEndDate: e.target.value})}
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-slate-700 mb-1">Execution Order</label>
+                      <input
+                        type="number"
+                        min="1"
+                        className="w-full px-3 py-2 border border-slate-300 rounded-lg text-slate-900"
+                        value={editTask.executionOrder || 1}
+                        onChange={e => setEditTask({...editTask, executionOrder: parseInt(e.target.value)})}
+                      />
+                    </div>
+                    <div className="pt-4 flex justify-end gap-2">
+                      <Button type="button" variant="ghost" onClick={() => setIsEditMode(false)}>Cancel</Button>
+                      <Button type="submit" isLoading={loading}>Save Changes</Button>
+                    </div>
+                  </div>
+                </form>
+              )}
             </div>
           </div>
         </div>
