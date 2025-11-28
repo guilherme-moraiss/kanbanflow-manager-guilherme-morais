@@ -3,7 +3,7 @@ import { apiBackend } from '../services/apiBackend';
 import { Task, TaskStatus, TaskType, User, UserRole } from '../types';
 import { useAuth } from '../context/AuthContext';
 import Button from './Button';
-import { Plus, Calendar, User as UserIcon, AlertCircle, X, GripHorizontal, Trash2, Clock, TrendingUp } from 'lucide-react';
+import { Plus, Calendar, User as UserIcon, AlertCircle, X, GripHorizontal, Trash2, Clock, TrendingUp, Search } from 'lucide-react';
 
 const KanbanBoard: React.FC = () => {
   const { user } = useAuth();
@@ -13,6 +13,7 @@ const KanbanBoard: React.FC = () => {
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [filterDev, setFilterDev] = useState<string>('all');
   const [filterType, setFilterType] = useState<string>('all');
+  const [searchQuery, setSearchQuery] = useState<string>('');
 
   // Modal State
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -190,6 +191,13 @@ const KanbanBoard: React.FC = () => {
     
     if (filterType !== 'all') {
       columnTasks = columnTasks.filter(t => t.taskTypeId === filterType);
+    }
+
+    if (searchQuery.trim()) {
+      columnTasks = columnTasks.filter(t => 
+        t.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (t.description && t.description.toLowerCase().includes(searchQuery.toLowerCase()))
+      );
     }
     
     columnTasks = columnTasks.sort((a, b) => a.executionOrder - b.executionOrder);
@@ -408,8 +416,20 @@ const KanbanBoard: React.FC = () => {
         </div>
       </div>
 
-      <div className="bg-white p-4 rounded-lg border border-slate-200 shadow-sm mb-6 flex gap-4 items-center">
+      <div className="bg-white p-4 rounded-lg border border-slate-200 shadow-sm mb-6 flex gap-4 items-center flex-wrap">
         <span className="text-sm font-medium text-slate-700">Filters:</span>
+        
+        <div className="relative flex-1 min-w-[200px]">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-400" />
+          <input
+            type="text"
+            placeholder="Search tasks..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full pl-10 pr-3 py-2 border border-slate-300 rounded-lg text-sm text-slate-700 bg-white focus:ring-2 focus:ring-indigo-500 outline-none"
+          />
+        </div>
+
         <select 
           className="px-3 py-2 border border-slate-300 rounded-lg text-sm text-slate-700 bg-white focus:ring-2 focus:ring-indigo-500 outline-none"
           value={filterDev}
@@ -430,12 +450,12 @@ const KanbanBoard: React.FC = () => {
             <option key={type.id} value={type.id}>{type.name}</option>
           ))}
         </select>
-        {(filterDev !== 'all' || filterType !== 'all') && (
+        {(filterDev !== 'all' || filterType !== 'all' || searchQuery.trim()) && (
           <button
-            onClick={() => { setFilterDev('all'); setFilterType('all'); }}
+            onClick={() => { setFilterDev('all'); setFilterType('all'); setSearchQuery(''); }}
             className="px-3 py-2 text-sm text-slate-600 hover:text-slate-800 underline"
           >
-            Clear Filters
+            Clear All
           </button>
         )}
       </div>
