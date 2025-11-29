@@ -9,6 +9,7 @@ import CompletedTasks from './components/CompletedTasks';
 import TaskTypeManagement from './components/TaskTypeManagement';
 import ManagerCompletedReport from './components/ManagerCompletedReport';
 import ManagerInProgressReport from './components/ManagerInProgressReport';
+import TodoEstimator from './components/TodoEstimator';
 
 const AppContent: React.FC = () => {
   const { isAuthenticated } = useAuth();
@@ -32,6 +33,8 @@ const AppContent: React.FC = () => {
         <ManagerCompletedReport />
       ) : activeTab === 'manager-inprogress' ? (
         <ManagerInProgressReport />
+      ) : activeTab === 'todo-estimator' ? (
+        <TodoEstimator />
       ) : (
         <KanbanBoard />
       )}
