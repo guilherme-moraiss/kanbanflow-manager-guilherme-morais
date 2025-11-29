@@ -85,25 +85,43 @@ const initializeDatabase = () => {
       }
     ];
 
-    db.get('SELECT COUNT(*) as count FROM Users', async (err, row) => {
+    db.get('SELECT COUNT(*) as count FROM Users', (err, row) => {
       if (!err && row.count === 0) {
+        console.log('Seeding users with hashed passwords...');
         const stmt = db.prepare('INSERT INTO Users VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)');
-        for (const user of seedUsers) {
+        
+        const seedUser = async (user) => {
           const hashedPassword = await bcrypt.hash(user.password, 10);
-          stmt.run(
-            user.id,
-            user.name,
-            user.username,
-            hashedPassword,
-            user.role,
-            user.experienceLevel,
-            user.department,
-            user.managerId,
-            user.avatarUrl || null
-          );
-        }
-        stmt.finalize();
-        console.log('Users seeded with hashed passwords');
+          return new Promise((resolve, reject) => {
+            stmt.run(
+              user.id,
+              user.name,
+              user.username,
+              hashedPassword,
+              user.role,
+              user.experienceLevel,
+              user.department,
+              user.managerId,
+              user.avatarUrl || null,
+              (err) => {
+                if (err) reject(err);
+                else {
+                  console.log(`User ${user.username} seeded with hashed password`);
+                  resolve();
+                }
+              }
+            );
+          });
+        };
+
+        Promise.all(seedUsers.map(user => seedUser(user)))
+          .then(() => {
+            stmt.finalize();
+            console.log('All users seeded successfully!');
+          })
+          .catch(err => {
+            console.error('Error seeding users:', err);
+          });
       }
     });
 
