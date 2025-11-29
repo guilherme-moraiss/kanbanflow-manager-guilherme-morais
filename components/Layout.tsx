@@ -1,7 +1,9 @@
 import React, { ReactNode } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { UserRole } from '../types';
-import { LogOut, Users, Layout as LayoutIcon, Settings, Menu, Bell, ClipboardList, CheckCircle, Tag, BarChart3, ListTodo, Calculator } from 'lucide-react';
+import { LogOut, Users, Layout as LayoutIcon, Menu, ClipboardList, CheckCircle, Tag, BarChart3, ListTodo, Calculator } from 'lucide-react';
+import NotificationDropdown from './NotificationDropdown';
+import SettingsDropdown from './SettingsDropdown';
 
 interface LayoutProps {
   children: ReactNode;
@@ -228,15 +230,10 @@ const Layout: React.FC<LayoutProps> = ({ children, activeTab, onNavigate }) => {
             </p>
           </div>
           
-          <div className="flex items-center gap-4">
-             <button className="p-2.5 rounded-full hover:bg-slate-100 text-slate-500 transition-colors relative">
-                <Bell className="w-5 h-5" />
-                <span className="absolute top-2 right-2.5 w-2 h-2 bg-red-500 rounded-full border-2 border-white"></span>
-             </button>
+          <div className="flex items-center gap-2">
+             <NotificationDropdown />
              <div className="h-8 w-px bg-slate-200 mx-1"></div>
-             <button className="p-2.5 rounded-full hover:bg-slate-100 text-slate-500 transition-colors">
-                <Settings className="w-5 h-5" />
-             </button>
+             <SettingsDropdown />
           </div>
         </header>
 

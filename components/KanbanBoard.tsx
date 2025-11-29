@@ -2,11 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { apiBackend } from '../services/apiBackend';
 import { Task, TaskStatus, TaskType, User, UserRole } from '../types';
 import { useAuth } from '../context/AuthContext';
+import { useNotifications } from '../context/NotificationContext';
 import Button from './Button';
 import { Plus, Calendar, User as UserIcon, AlertCircle, X, GripHorizontal, Trash2, Clock, TrendingUp, Search } from 'lucide-react';
 
 const KanbanBoard: React.FC = () => {
   const { user } = useAuth();
+  const { addNotification } = useNotifications();
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -69,6 +71,7 @@ const KanbanBoard: React.FC = () => {
   const handleDrop = async (e: React.DragEvent, status: TaskStatus) => {
     e.preventDefault();
     const taskId = e.dataTransfer.getData('taskId');
+    const movedTask = tasks.find(t => t.id === taskId);
     
     // Optimistic Update
     const originalTasks = [...tasks];
@@ -80,11 +83,33 @@ const KanbanBoard: React.FC = () => {
     try {
         if (!user) return;
         await apiBackend.tasks.move(taskId, status, user);
+        
+        if (movedTask) {
+          if (status === TaskStatus.DONE) {
+            addNotification({
+              title: '🎉 Task Completed!',
+              message: `"${movedTask.title}" has been marked as done`,
+              type: 'success'
+            });
+          } else if (status === TaskStatus.DOING) {
+            addNotification({
+              title: 'Task Started',
+              message: `"${movedTask.title}" is now in progress`,
+              type: 'info'
+            });
+          }
+        }
+        
         fetchBoardData();
     } catch (err: any) {
         console.error("Move failed", err);
         setTasks(originalTasks);
-        alert(err.message || "Failed to move task.");
+        
+        addNotification({
+          title: 'Error Moving Task',
+          message: err.message || "Failed to move task",
+          type: 'error'
+        });
     }
   };
 
@@ -160,7 +185,7 @@ const KanbanBoard: React.FC = () => {
             throw new Error("Please fill in required fields");
         }
 
-        await apiBackend.tasks.create({
+        const createdTask = await apiBackend.tasks.create({
             ...newTask as any,
             status: TaskStatus.TODO
         }, user.id);
@@ -169,6 +194,22 @@ const KanbanBoard: React.FC = () => {
         setNewTask({ storyPoints: 1, executionOrder: 1, developerId: '', taskTypeId: taskTypes[0]?.id });
         setSuccessMessage('Task created successfully!');
         setTimeout(() => setSuccessMessage(null), 3000);
+        
+        addNotification({
+          title: 'Task Created',
+          message: `"${createdTask.title}" has been created successfully`,
+          type: 'success'
+        });
+
+        if (newTask.developerId && newTask.developerId !== user.id) {
+          const developer = availableDevs.find(dev => dev.id === newTask.developerId);
+          addNotification({
+            title: 'New Task Assigned',
+            message: `Task "${createdTask.title}" has been assigned to ${developer?.name || 'a developer'}`,
+            type: 'info'
+          });
+        }
+
         fetchBoardData();
     } catch (err: any) {
         setError(err.message);
