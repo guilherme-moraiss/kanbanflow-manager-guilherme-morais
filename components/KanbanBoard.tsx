@@ -4,6 +4,7 @@ import { Task, TaskStatus, TaskType, User, UserRole } from '../types';
 import { useAuth } from '../context/AuthContext';
 import { useNotifications } from '../context/NotificationContext';
 import { useToast } from '../context/ToastContext';
+import { triggerConfetti } from '../utils/confetti';
 import Button from './Button';
 import { Plus, Calendar, User as UserIcon, AlertCircle, X, GripHorizontal, Trash2, Clock, TrendingUp, Search } from 'lucide-react';
 
@@ -88,6 +89,7 @@ const KanbanBoard: React.FC = () => {
         
         if (movedTask) {
           if (status === TaskStatus.DONE) {
+            triggerConfetti(); // 🎊 Confetti animation!
             showSuccess('Tarefa Concluída! 🎉', `"${movedTask.title}" foi marcada como concluída`);
             addNotification({
               title: '🎉 Task Completed!',
@@ -278,7 +280,7 @@ const KanbanBoard: React.FC = () => {
               draggable
               onDragStart={(e) => handleDragStart(e, task.id)}
               onClick={() => handleViewTask(task)}
-              className="bg-white dark:bg-slate-800 p-4 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 cursor-pointer hover:shadow-md dark:hover:shadow-slate-900/50 transition-shadow group relative"
+              className="bg-white dark:bg-slate-800 p-4 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 cursor-pointer hover:shadow-lg dark:hover:shadow-slate-900/50 hover:scale-[1.02] hover:-translate-y-1 transition-all duration-200 group relative"
             >
               {/* Card Actions */}
               <div className="absolute top-3 right-3 flex items-center gap-2">
