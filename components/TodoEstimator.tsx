@@ -131,8 +131,8 @@ const TodoEstimator: React.FC = () => {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold text-slate-800">ToDo Time Estimator</h2>
-        <p className="text-sm text-slate-500 mt-1">Estimate completion time for pending tasks based on historical data</p>
+        <h2 className="text-2xl font-bold text-slate-800 dark:text-white">ToDo Time Estimator</h2>
+        <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Estimate completion time for pending tasks based on historical data</p>
       </div>
 
       <div className="grid grid-cols-3 gap-4">
@@ -145,48 +145,48 @@ const TodoEstimator: React.FC = () => {
           <div className="text-sm opacity-90 mt-1">days for {todoTasks.length} tasks</div>
         </div>
 
-        <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-          <div className="text-xs text-slate-500 font-medium mb-1">ToDo Tasks</div>
-          <div className="text-3xl font-bold text-slate-800">{todoTasks.length}</div>
-          <div className="text-xs text-slate-500 mt-1">Pending tasks</div>
+        <div className="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700">
+          <div className="text-xs text-slate-500 dark:text-slate-400 font-medium mb-1">ToDo Tasks</div>
+          <div className="text-3xl font-bold text-slate-800 dark:text-white">{todoTasks.length}</div>
+          <div className="text-xs text-slate-500 dark:text-slate-400 mt-1">Pending tasks</div>
         </div>
 
-        <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-          <div className="text-xs text-slate-500 font-medium mb-1">Historical Data</div>
-          <div className="text-3xl font-bold text-slate-800">{completedTasks.length}</div>
-          <div className="text-xs text-slate-500 mt-1">Completed tasks</div>
+        <div className="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700">
+          <div className="text-xs text-slate-500 dark:text-slate-400 font-medium mb-1">Historical Data</div>
+          <div className="text-3xl font-bold text-slate-800 dark:text-white">{completedTasks.length}</div>
+          <div className="text-xs text-slate-500 dark:text-slate-400 mt-1">Completed tasks</div>
         </div>
       </div>
 
       {completedTasks.length === 0 ? (
-        <div className="bg-amber-50 border border-amber-200 rounded-xl p-6 flex items-start gap-3">
-          <AlertCircle className="w-5 h-5 text-amber-600 mt-0.5" />
+        <div className="bg-amber-50 dark:bg-amber-900/30 border border-amber-200 dark:border-amber-800 rounded-xl p-6 flex items-start gap-3">
+          <AlertCircle className="w-5 h-5 text-amber-600 dark:text-amber-400 mt-0.5" />
           <div>
-            <h3 className="font-semibold text-amber-900">No historical data available</h3>
-            <p className="text-sm text-amber-700 mt-1">
+            <h3 className="font-semibold text-amber-900 dark:text-amber-300">No historical data available</h3>
+            <p className="text-sm text-amber-700 dark:text-amber-400 mt-1">
               Complete some tasks first to generate estimates based on Story Points averages.
             </p>
           </div>
         </div>
       ) : (
         <div className="grid grid-cols-2 gap-6">
-          <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-            <h3 className="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
-              <Calculator className="w-5 h-5 text-indigo-600" />
+          <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+            <h3 className="text-lg font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-2">
+              <Calculator className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
               Story Points Averages
             </h3>
             <div className="space-y-3">
               {averagesArray.map(avg => (
-                <div key={avg.storyPoints} className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-100">
+                <div key={avg.storyPoints} className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-900/50 rounded-lg border border-slate-100 dark:border-slate-700">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-lg bg-indigo-100 text-indigo-700 font-bold flex items-center justify-center">
+                    <div className="w-10 h-10 rounded-lg bg-indigo-100 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-400 font-bold flex items-center justify-center">
                       {avg.storyPoints}
                     </div>
                     <div>
-                      <div className="text-sm font-semibold text-slate-800">
+                      <div className="text-sm font-semibold text-slate-800 dark:text-white">
                         {avg.averageDays.toFixed(1)} days
                       </div>
-                      <div className="text-xs text-slate-500">
+                      <div className="text-xs text-slate-500 dark:text-slate-400">
                         Based on {avg.taskCount} task{avg.taskCount > 1 ? 's' : ''}
                       </div>
                     </div>
@@ -196,13 +196,13 @@ const TodoEstimator: React.FC = () => {
             </div>
           </div>
 
-          <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-            <h3 className="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
-              <TrendingUp className="w-5 h-5 text-indigo-600" />
+          <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+            <h3 className="text-lg font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-2">
+              <TrendingUp className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
               ToDo Tasks Breakdown
             </h3>
             {todoTasks.length === 0 ? (
-              <div className="text-center py-8 text-slate-500">
+              <div className="text-center py-8 text-slate-500 dark:text-slate-400">
                 <p>No pending tasks</p>
               </div>
             ) : (
@@ -210,15 +210,15 @@ const TodoEstimator: React.FC = () => {
                 {todoTasks.map(task => {
                   const estimate = estimateTaskDuration(task, averagesMap);
                   return (
-                    <div key={task.id} className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-100">
+                    <div key={task.id} className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-900/50 rounded-lg border border-slate-100 dark:border-slate-700">
                       <div className="flex-1">
-                        <div className="font-medium text-slate-800 text-sm">{task.title}</div>
-                        <div className="text-xs text-slate-500 mt-0.5">
+                        <div className="font-medium text-slate-800 dark:text-white text-sm">{task.title}</div>
+                        <div className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
                           {task.storyPoints} SP • {task.developerName || 'Unassigned'}
                         </div>
                       </div>
                       <div className="text-right ml-3">
-                        <div className="font-bold text-indigo-600">~{Math.round(estimate)}d</div>
+                        <div className="font-bold text-indigo-600 dark:text-indigo-400">~{Math.round(estimate)}d</div>
                       </div>
                     </div>
                   );
