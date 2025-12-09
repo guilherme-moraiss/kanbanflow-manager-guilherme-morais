@@ -3,12 +3,14 @@ import { apiBackend } from '../services/apiBackend';
 import { Task, TaskStatus, TaskType, User, UserRole } from '../types';
 import { useAuth } from '../context/AuthContext';
 import { useNotifications } from '../context/NotificationContext';
+import { useToast } from '../context/ToastContext';
 import Button from './Button';
 import { Plus, Calendar, User as UserIcon, AlertCircle, X, GripHorizontal, Trash2, Clock, TrendingUp, Search } from 'lucide-react';
 
 const KanbanBoard: React.FC = () => {
   const { user } = useAuth();
   const { addNotification } = useNotifications();
+  const { showSuccess, showError, showInfo } = useToast();
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -86,12 +88,14 @@ const KanbanBoard: React.FC = () => {
         
         if (movedTask) {
           if (status === TaskStatus.DONE) {
+            showSuccess('Tarefa Concluída! 🎉', `"${movedTask.title}" foi marcada como concluída`);
             addNotification({
               title: '🎉 Task Completed!',
               message: `"${movedTask.title}" has been marked as done`,
               type: 'success'
             });
           } else if (status === TaskStatus.DOING) {
+            showInfo('Tarefa Iniciada', `"${movedTask.title}" está agora em progresso`);
             addNotification({
               title: 'Task Started',
               message: `"${movedTask.title}" is now in progress`,
@@ -105,6 +109,7 @@ const KanbanBoard: React.FC = () => {
         console.error("Move failed", err);
         setTasks(originalTasks);
         
+        showError('Erro ao Mover', err.message || "Não foi possível mover a tarefa");
         addNotification({
           title: 'Error Moving Task',
           message: err.message || "Failed to move task",
@@ -195,6 +200,9 @@ const KanbanBoard: React.FC = () => {
         setSuccessMessage('Task created successfully!');
         setTimeout(() => setSuccessMessage(null), 3000);
         
+        // Toast pop-up
+        showSuccess('Tarefa Criada!', `"${createdTask.title}" foi criada com sucesso`);
+        
         addNotification({
           title: 'Task Created',
           message: `"${createdTask.title}" has been created successfully`,
@@ -213,6 +221,7 @@ const KanbanBoard: React.FC = () => {
         fetchBoardData();
     } catch (err: any) {
         setError(err.message);
+        showError('Erro', err.message);
     } finally {
         setLoading(false);
     }
