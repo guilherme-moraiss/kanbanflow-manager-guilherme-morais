@@ -114,8 +114,8 @@ const ManagerCompletedReport: React.FC = () => {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-2xl font-bold text-slate-800">Completed Tasks Report</h2>
-          <p className="text-sm text-slate-500 mt-1">Overview of all completed tasks with planned vs real duration</p>
+          <h2 className="text-2xl font-bold text-slate-800 dark:text-white">Completed Tasks Report</h2>
+          <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Overview of all completed tasks with planned vs real duration</p>
         </div>
         {completedTasks.length > 0 && (
           <Button onClick={exportToCSV}>
@@ -126,13 +126,13 @@ const ManagerCompletedReport: React.FC = () => {
       </div>
 
       <div className="grid grid-cols-4 gap-4">
-        <div className="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
-          <div className="text-xs text-slate-500 font-medium mb-1">Total Completed</div>
-          <div className="text-2xl font-bold text-slate-800">{completedTasks.length}</div>
+        <div className="bg-white dark:bg-slate-800 p-5 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700">
+          <div className="text-xs text-slate-500 dark:text-slate-400 font-medium mb-1">Total Completed</div>
+          <div className="text-2xl font-bold text-slate-800 dark:text-white">{completedTasks.length}</div>
         </div>
-        <div className="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
-          <div className="text-xs text-slate-500 font-medium mb-1">On Time</div>
-          <div className="text-2xl font-bold text-green-600">
+        <div className="bg-white dark:bg-slate-800 p-5 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700">
+          <div className="text-xs text-slate-500 dark:text-slate-400 font-medium mb-1">On Time</div>
+          <div className="text-2xl font-bold text-green-600 dark:text-green-400">
             {completedTasks.filter(t => {
               const planned = calculatePlannedDuration(t.plannedStartDate, t.plannedEndDate);
               const real = calculateRealDuration(t.realStartDate, t.realEndDate);
@@ -140,9 +140,9 @@ const ManagerCompletedReport: React.FC = () => {
             }).length}
           </div>
         </div>
-        <div className="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
-          <div className="text-xs text-slate-500 font-medium mb-1">Delayed</div>
-          <div className="text-2xl font-bold text-red-600">
+        <div className="bg-white dark:bg-slate-800 p-5 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700">
+          <div className="text-xs text-slate-500 dark:text-slate-400 font-medium mb-1">Delayed</div>
+          <div className="text-2xl font-bold text-red-600 dark:text-red-400">
             {completedTasks.filter(t => {
               const planned = calculatePlannedDuration(t.plannedStartDate, t.plannedEndDate);
               const real = calculateRealDuration(t.realStartDate, t.realEndDate);
@@ -150,25 +150,25 @@ const ManagerCompletedReport: React.FC = () => {
             }).length}
           </div>
         </div>
-        <div className="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
-          <div className="text-xs text-slate-500 font-medium mb-1">Total Story Points</div>
-          <div className="text-2xl font-bold text-indigo-600">
+        <div className="bg-white dark:bg-slate-800 p-5 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700">
+          <div className="text-xs text-slate-500 dark:text-slate-400 font-medium mb-1">Total Story Points</div>
+          <div className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">
             {completedTasks.reduce((sum, t) => sum + (t.storyPoints || 0), 0)}
           </div>
         </div>
       </div>
 
       {completedTasks.length === 0 ? (
-        <div className="p-8 text-center bg-white rounded-xl shadow-sm border border-slate-200">
-          <CheckCircle className="w-12 h-12 text-slate-300 mx-auto mb-3" />
-          <p className="text-lg font-medium text-slate-700">No completed tasks yet</p>
-          <p className="text-sm text-slate-500 mt-2">Tasks will appear here once they are completed.</p>
+        <div className="p-8 text-center bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700">
+          <CheckCircle className="w-12 h-12 text-slate-300 dark:text-slate-600 mx-auto mb-3" />
+          <p className="text-lg font-medium text-slate-700 dark:text-slate-300">No completed tasks yet</p>
+          <p className="text-sm text-slate-500 dark:text-slate-400 mt-2">Tasks will appear here once they are completed.</p>
         </div>
       ) : (
-        <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm">
-              <thead className="bg-slate-50 text-slate-600 font-semibold border-b border-slate-200">
+              <thead className="bg-slate-50 dark:bg-slate-900/50 text-slate-600 dark:text-slate-300 font-semibold border-b border-slate-200 dark:border-slate-700">
                 <tr>
                   <th className="px-6 py-4 whitespace-nowrap">Task</th>
                   <th className="px-6 py-4 whitespace-nowrap">Developer</th>
@@ -179,7 +179,7 @@ const ManagerCompletedReport: React.FC = () => {
                   <th className="px-6 py-4 whitespace-nowrap text-center">Variance</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100">
+              <tbody className="divide-y divide-slate-100 dark:divide-slate-700">
                 {completedTasks.map((task) => {
                   const plannedDuration = calculatePlannedDuration(task.plannedStartDate, task.plannedEndDate);
                   const realDuration = calculateRealDuration(task.realStartDate, task.realEndDate);
@@ -187,24 +187,24 @@ const ManagerCompletedReport: React.FC = () => {
                   const isDelayed = variance > 0;
 
                   return (
-                    <tr key={task.id} className="hover:bg-slate-50 transition-colors">
-                      <td className="px-6 py-4 font-medium text-slate-900">{task.title}</td>
-                      <td className="px-6 py-4 text-slate-700">{task.developerName}</td>
+                    <tr key={task.id} className="hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
+                      <td className="px-6 py-4 font-medium text-slate-900 dark:text-white">{task.title}</td>
+                      <td className="px-6 py-4 text-slate-700 dark:text-slate-300">{task.developerName}</td>
                       <td className="px-6 py-4">
                         <span className="text-xs font-medium uppercase" style={{ color: task.taskTypeColor }}>
                           {task.taskTypeName}
                         </span>
                       </td>
-                      <td className="px-6 py-4 text-center text-slate-700 font-mono">{task.storyPoints}</td>
-                      <td className="px-6 py-4 text-center text-slate-700 font-semibold">
+                      <td className="px-6 py-4 text-center text-slate-700 dark:text-slate-300 font-mono">{task.storyPoints}</td>
+                      <td className="px-6 py-4 text-center text-slate-700 dark:text-slate-300 font-semibold">
                         {plannedDuration}d
                       </td>
-                      <td className="px-6 py-4 text-center text-slate-700 font-semibold">
+                      <td className="px-6 py-4 text-center text-slate-700 dark:text-slate-300 font-semibold">
                         {realDuration}d
                       </td>
                       <td className="px-6 py-4 text-center">
                         <div className={`flex items-center justify-center gap-1.5 font-semibold ${
-                          isDelayed ? 'text-red-600' : variance === 0 ? 'text-slate-600' : 'text-green-600'
+                          isDelayed ? 'text-red-600 dark:text-red-400' : variance === 0 ? 'text-slate-600 dark:text-slate-400' : 'text-green-600 dark:text-green-400'
                         }`}>
                           {isDelayed ? (
                             <TrendingUp className="w-4 h-4" />
