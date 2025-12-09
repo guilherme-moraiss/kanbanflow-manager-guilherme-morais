@@ -1,6 +1,7 @@
 import { User, AuthResponse, Task, TaskType, TaskStatus } from '../types';
 
-const API_URL = 'http://localhost:3001/api';
+// Use URL relativa em produção, localhost em desenvolvimento
+const API_URL = import.meta.env.PROD ? '/api' : 'http://localhost:3001/api';
 
 const handleResponse = async (response: Response) => {
   if (!response.ok) {
