@@ -580,9 +580,9 @@ const KanbanBoard: React.FC = () => {
 
                     <div className="grid grid-cols-2 gap-4">
                          <div>
-                            <label className="block text-sm font-medium text-slate-700 mb-1">Type</label>
+                            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Type</label>
                             <select 
-                                className="w-full px-3 py-2 border border-slate-300 rounded-lg text-slate-900 bg-white"
+                                className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg text-slate-900 dark:text-white bg-white dark:bg-slate-700 focus:ring-2 focus:ring-indigo-500 outline-none"
                                 value={newTask.taskTypeId}
                                 onChange={e => setNewTask({...newTask, taskTypeId: e.target.value})}
                             >
@@ -592,11 +592,11 @@ const KanbanBoard: React.FC = () => {
                             </select>
                          </div>
                          <div>
-                             <label className="block text-sm font-medium text-slate-700 mb-1">Story Points</label>
+                             <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Story Points</label>
                              <input 
                                 type="number" 
                                 min="1"
-                                className="w-full px-3 py-2 border border-slate-300 rounded-lg text-slate-900"
+                                className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg text-slate-900 dark:text-white bg-white dark:bg-slate-700 focus:ring-2 focus:ring-indigo-500 outline-none"
                                 value={newTask.storyPoints}
                                 onChange={e => setNewTask({...newTask, storyPoints: parseInt(e.target.value)})}
                              />
@@ -605,9 +605,9 @@ const KanbanBoard: React.FC = () => {
 
                     <div className="grid grid-cols-2 gap-4">
                         <div>
-                            <label className="block text-sm font-medium text-slate-700 mb-1">Assign Developer</label>
+                            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Assign Developer</label>
                             <select 
-                                className="w-full px-3 py-2 border border-slate-300 rounded-lg text-slate-900 bg-white"
+                                className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg text-slate-900 dark:text-white bg-white dark:bg-slate-700 focus:ring-2 focus:ring-indigo-500 outline-none"
                                 value={newTask.developerId || ''}
                                 onChange={e => setNewTask({...newTask, developerId: e.target.value})}
                             >
@@ -618,16 +618,16 @@ const KanbanBoard: React.FC = () => {
                             </select>
                         </div>
                         <div>
-                            <label className="block text-sm font-medium text-slate-700 mb-1">Execution Order</label>
+                            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Execution Order</label>
                             <input 
                                 type="number"
                                 min="1"
-                                className="w-full px-3 py-2 border border-slate-300 rounded-lg text-slate-900"
+                                className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg text-slate-900 dark:text-white bg-white dark:bg-slate-700 focus:ring-2 focus:ring-indigo-500 outline-none"
                                 value={newTask.executionOrder}
                                 onChange={e => setNewTask({...newTask, executionOrder: parseInt(e.target.value)})}
                                 placeholder="Priority (1, 2, 3...)"
                             />
-                            <p className="text-[10px] text-slate-500 mt-1">Must be unique per developer</p>
+                            <p className="text-[10px] text-slate-500 dark:text-slate-400 mt-1">Must be unique per developer</p>
                         </div>
                     </div>
 
@@ -642,9 +642,9 @@ const KanbanBoard: React.FC = () => {
 
       {isViewModalOpen && selectedTask && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
-          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden">
-            <div className="px-6 py-5 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
-              <h3 className="text-lg font-bold text-slate-800">
+          <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden animate-scale-in">
+            <div className="px-6 py-5 border-b border-slate-100 dark:border-slate-700 flex justify-between items-center bg-slate-50/50 dark:bg-slate-900/50">
+              <h3 className="text-lg font-bold text-slate-800 dark:text-white">
                 {isEditMode ? 'Edit Task' : 'Task Details'}
               </h3>
               <div className="flex items-center gap-2">
@@ -656,7 +656,7 @@ const KanbanBoard: React.FC = () => {
                     Edit
                   </button>
                 )}
-                <button onClick={() => { setIsViewModalOpen(false); setIsEditMode(false); }} className="text-slate-400 hover:text-slate-600">
+                <button onClick={() => { setIsViewModalOpen(false); setIsEditMode(false); }} className="text-slate-400 hover:text-slate-600 dark:hover:text-white">
                   <X className="w-5 h-5" />
                 </button>
               </div>
@@ -666,77 +666,77 @@ const KanbanBoard: React.FC = () => {
               {!isEditMode ? (
                 <>
                   <div>
-                    <label className="block text-sm font-medium text-slate-500 mb-1">Title</label>
-                    <div className="text-slate-900 font-medium">{selectedTask.title}</div>
+                    <label className="block text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">Title</label>
+                    <div className="text-slate-900 dark:text-white font-medium">{selectedTask.title}</div>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-slate-500 mb-1">Description</label>
-                    <div className="text-slate-700">{selectedTask.description || '-'}</div>
+                    <label className="block text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">Description</label>
+                    <div className="text-slate-700 dark:text-slate-300">{selectedTask.description || '-'}</div>
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-medium text-slate-500 mb-1">Type</label>
-                      <div className="text-slate-900">{selectedTask.taskTypeName}</div>
+                      <label className="block text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">Type</label>
+                      <div className="text-slate-900 dark:text-white">{selectedTask.taskTypeName}</div>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-slate-500 mb-1">Story Points</label>
-                      <div className="text-slate-900 font-mono">{selectedTask.storyPoints}</div>
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm font-medium text-slate-500 mb-1">Developer</label>
-                      <div className="text-slate-900">{selectedTask.developerName || 'Unassigned'}</div>
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-slate-500 mb-1">Manager</label>
-                      <div className="text-slate-900">{selectedTask.managerName}</div>
+                      <label className="block text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">Story Points</label>
+                      <div className="text-slate-900 dark:text-white font-mono">{selectedTask.storyPoints}</div>
                     </div>
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-medium text-slate-500 mb-1">Planned Start</label>
-                      <div className="text-slate-900 text-sm">
+                      <label className="block text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">Developer</label>
+                      <div className="text-slate-900 dark:text-white">{selectedTask.developerName || 'Unassigned'}</div>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">Manager</label>
+                      <div className="text-slate-900 dark:text-white">{selectedTask.managerName}</div>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">Planned Start</label>
+                      <div className="text-slate-900 dark:text-white text-sm">
                         {selectedTask.plannedStartDate ? new Date(selectedTask.plannedStartDate).toLocaleDateString() : '-'}
                       </div>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-slate-500 mb-1">Planned End</label>
-                      <div className="text-slate-900 text-sm">
+                      <label className="block text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">Planned End</label>
+                      <div className="text-slate-900 dark:text-white text-sm">
                         {selectedTask.plannedEndDate ? new Date(selectedTask.plannedEndDate).toLocaleDateString() : '-'}
                       </div>
                     </div>
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-medium text-slate-500 mb-1">Real Start</label>
-                      <div className="text-slate-900 text-sm">
+                      <label className="block text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">Real Start</label>
+                      <div className="text-slate-900 dark:text-white text-sm">
                         {selectedTask.realStartDate ? new Date(selectedTask.realStartDate).toLocaleDateString() : '-'}
                       </div>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-slate-500 mb-1">Real End</label>
-                      <div className="text-slate-900 text-sm">
+                      <label className="block text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">Real End</label>
+                      <div className="text-slate-900 dark:text-white text-sm">
                         {selectedTask.realEndDate ? new Date(selectedTask.realEndDate).toLocaleDateString() : '-'}
                       </div>
                     </div>
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-medium text-slate-500 mb-1">Status</label>
+                      <label className="block text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">Status</label>
                       <div>
                         <span className={`inline-block px-3 py-1 text-sm font-medium rounded-full ${
-                          selectedTask.status === TaskStatus.TODO ? 'bg-slate-100 text-slate-700' :
-                          selectedTask.status === TaskStatus.DOING ? 'bg-blue-100 text-blue-700' :
-                          'bg-green-100 text-green-700'
+                          selectedTask.status === TaskStatus.TODO ? 'bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300' :
+                          selectedTask.status === TaskStatus.DOING ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400' :
+                          'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400'
                         }`}>
                           {selectedTask.status}
                         </span>
                       </div>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-slate-500 mb-1">Execution Order</label>
-                      <div className="text-slate-900 font-mono">{selectedTask.executionOrder}</div>
+                      <label className="block text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">Execution Order</label>
+                      <div className="text-slate-900 dark:text-white font-mono">{selectedTask.executionOrder}</div>
                     </div>
                   </div>
                   <div className="pt-4 flex justify-end">
@@ -761,19 +761,19 @@ const KanbanBoard: React.FC = () => {
                 }}>
                   <div className="space-y-4">
                     <div>
-                      <label className="block text-sm font-medium text-slate-700 mb-1">Title</label>
+                      <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Title</label>
                       <input
                         required
                         type="text"
-                        className="w-full px-3 py-2 border border-slate-300 rounded-lg text-slate-900"
+                        className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg text-slate-900 dark:text-white bg-white dark:bg-slate-700 focus:ring-2 focus:ring-indigo-500 outline-none"
                         value={editTask.title || ''}
                         onChange={e => setEditTask({...editTask, title: e.target.value})}
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-slate-700 mb-1">Description</label>
+                      <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Description</label>
                       <textarea
-                        className="w-full px-3 py-2 border border-slate-300 rounded-lg text-slate-900"
+                        className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg text-slate-900 dark:text-white bg-white dark:bg-slate-700 focus:ring-2 focus:ring-indigo-500 outline-none"
                         rows={3}
                         value={editTask.description || ''}
                         onChange={e => setEditTask({...editTask, description: e.target.value})}
@@ -781,9 +781,9 @@ const KanbanBoard: React.FC = () => {
                     </div>
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-sm font-medium text-slate-700 mb-1">Type</label>
+                        <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Type</label>
                         <select
-                          className="w-full px-3 py-2 border border-slate-300 rounded-lg text-slate-900 bg-white"
+                          className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg text-slate-900 dark:text-white bg-white dark:bg-slate-700 focus:ring-2 focus:ring-indigo-500 outline-none"
                           value={editTask.taskTypeId}
                           onChange={e => setEditTask({...editTask, taskTypeId: e.target.value})}
                         >
@@ -793,20 +793,20 @@ const KanbanBoard: React.FC = () => {
                         </select>
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-slate-700 mb-1">Story Points</label>
+                        <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Story Points</label>
                         <input
                           type="number"
                           min="1"
-                          className="w-full px-3 py-2 border border-slate-300 rounded-lg text-slate-900"
+                          className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg text-slate-900 dark:text-white bg-white dark:bg-slate-700 focus:ring-2 focus:ring-indigo-500 outline-none"
                           value={editTask.storyPoints || 1}
                           onChange={e => setEditTask({...editTask, storyPoints: parseInt(e.target.value)})}
                         />
                       </div>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-slate-700 mb-1">Developer</label>
+                      <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Developer</label>
                       <select
-                        className="w-full px-3 py-2 border border-slate-300 rounded-lg text-slate-900 bg-white"
+                        className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg text-slate-900 dark:text-white bg-white dark:bg-slate-700 focus:ring-2 focus:ring-indigo-500 outline-none"
                         value={editTask.developerId}
                         onChange={e => setEditTask({...editTask, developerId: e.target.value})}
                       >
@@ -817,30 +817,30 @@ const KanbanBoard: React.FC = () => {
                     </div>
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-sm font-medium text-slate-700 mb-1">Planned Start</label>
+                        <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Planned Start</label>
                         <input
                           type="date"
-                          className="w-full px-3 py-2 border border-slate-300 rounded-lg text-slate-900"
+                          className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg text-slate-900 dark:text-white bg-white dark:bg-slate-700 focus:ring-2 focus:ring-indigo-500 outline-none"
                           value={editTask.plannedStartDate || ''}
                           onChange={e => setEditTask({...editTask, plannedStartDate: e.target.value})}
                         />
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-slate-700 mb-1">Planned End</label>
+                        <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Planned End</label>
                         <input
                           type="date"
-                          className="w-full px-3 py-2 border border-slate-300 rounded-lg text-slate-900"
+                          className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg text-slate-900 dark:text-white bg-white dark:bg-slate-700 focus:ring-2 focus:ring-indigo-500 outline-none"
                           value={editTask.plannedEndDate || ''}
                           onChange={e => setEditTask({...editTask, plannedEndDate: e.target.value})}
                         />
                       </div>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-slate-700 mb-1">Execution Order</label>
+                      <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Execution Order</label>
                       <input
                         type="number"
                         min="1"
-                        className="w-full px-3 py-2 border border-slate-300 rounded-lg text-slate-900"
+                        className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg text-slate-900 dark:text-white bg-white dark:bg-slate-700 focus:ring-2 focus:ring-indigo-500 outline-none"
                         value={editTask.executionOrder || 1}
                         onChange={e => setEditTask({...editTask, executionOrder: parseInt(e.target.value)})}
                       />
