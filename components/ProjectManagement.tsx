@@ -55,23 +55,23 @@ const ProjectManagement: React.FC = () => {
 
   const getStatusIcon = (status: string) => {
     switch (status) {
-      case 'done': return <CheckCircle className="w-5 h-5 text-green-500" />;
-      case 'in-progress': return <Clock className="w-5 h-5 text-blue-500" />;
-      default: return <Circle className="w-5 h-5 text-slate-300" />;
+      case 'done': return <CheckCircle className="w-5 h-5 text-green-500 dark:text-green-400" />;
+      case 'in-progress': return <Clock className="w-5 h-5 text-blue-500 dark:text-blue-400" />;
+      default: return <Circle className="w-5 h-5 text-slate-300 dark:text-slate-600" />;
     }
   };
 
   const getStatusBadge = (status: string) => {
     switch (status) {
-      case 'done': return <span className="px-2 py-1 text-xs font-medium bg-green-100 text-green-700 rounded-full">Done</span>;
-      case 'in-progress': return <span className="px-2 py-1 text-xs font-medium bg-blue-100 text-blue-700 rounded-full">In Progress</span>;
-      default: return <span className="px-2 py-1 text-xs font-medium bg-slate-100 text-slate-600 rounded-full">To Do</span>;
+      case 'done': return <span className="px-2 py-1 text-xs font-medium bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 rounded-full">Done</span>;
+      case 'in-progress': return <span className="px-2 py-1 text-xs font-medium bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 rounded-full">In Progress</span>;
+      default: return <span className="px-2 py-1 text-xs font-medium bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 rounded-full">To Do</span>;
     }
   };
 
   return (
     <div className="space-y-6">
-      <div className="flex gap-4 mb-6">
+      <div className="flex gap-4 mb-6 flex-wrap">
         {[1, 2, 3, 4].map(sprint => (
           <button
             key={sprint}
@@ -79,7 +79,7 @@ const ProjectManagement: React.FC = () => {
             className={`px-4 py-2 rounded-lg font-medium transition-all ${
               selectedSprint === sprint
                 ? 'bg-indigo-600 text-white shadow-md'
-                : 'bg-white text-slate-600 hover:bg-slate-50 border border-slate-200'
+                : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700'
             }`}
           >
             Sprint {sprint}
@@ -87,23 +87,23 @@ const ProjectManagement: React.FC = () => {
         ))}
       </div>
 
-      <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
+      <div className="bg-white dark:bg-slate-800 rounded-xl p-6 border border-slate-200 dark:border-slate-700 shadow-sm">
         <div className="flex justify-between items-center mb-6">
           <div>
-            <h3 className="text-xl font-bold text-slate-800">Sprint {selectedSprint}</h3>
-            <p className="text-sm text-slate-500 mt-1">
+            <h3 className="text-xl font-bold text-slate-800 dark:text-white">Sprint {selectedSprint}</h3>
+            <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
               {donePoints} / {totalPoints} Story Points
             </p>
           </div>
           <div className="text-right">
-            <div className="text-sm text-slate-500">Progresso</div>
-            <div className="text-2xl font-bold text-indigo-600">
+            <div className="text-sm text-slate-500 dark:text-slate-400">Progresso</div>
+            <div className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">
               {totalPoints > 0 ? Math.round((donePoints / totalPoints) * 100) : 0}%
             </div>
           </div>
         </div>
 
-        <div className="w-full bg-slate-100 rounded-full h-2 mb-8">
+        <div className="w-full bg-slate-100 dark:bg-slate-700 rounded-full h-2 mb-8">
           <div 
             className="bg-indigo-600 h-2 rounded-full transition-all" 
             style={{ width: `${totalPoints > 0 ? (donePoints / totalPoints) * 100 : 0}%` }}
@@ -112,16 +112,16 @@ const ProjectManagement: React.FC = () => {
 
         <div className="space-y-3">
           {sprintTasks.map(task => (
-            <div key={task.id} className="flex items-center gap-4 p-4 bg-slate-50 rounded-lg border border-slate-200 hover:border-indigo-200 transition-colors">
+            <div key={task.id} className="flex items-center gap-4 p-4 bg-slate-50 dark:bg-slate-900/50 rounded-lg border border-slate-200 dark:border-slate-700 hover:border-indigo-200 dark:hover:border-indigo-800 transition-colors">
               {getStatusIcon(task.status)}
               <div className="flex-1">
                 <div className="flex items-center gap-2">
-                  <span className="text-sm font-mono text-slate-500">{task.id}</span>
-                  <span className="text-sm font-medium text-slate-800">{task.title}</span>
+                  <span className="text-sm font-mono text-slate-500 dark:text-slate-400">{task.id}</span>
+                  <span className="text-sm font-medium text-slate-800 dark:text-white">{task.title}</span>
                 </div>
               </div>
               <div className="flex items-center gap-3">
-                <span className="text-sm text-slate-600 font-mono">{task.storyPoints} SP</span>
+                <span className="text-sm text-slate-600 dark:text-slate-400 font-mono">{task.storyPoints} SP</span>
                 {getStatusBadge(task.status)}
               </div>
             </div>
