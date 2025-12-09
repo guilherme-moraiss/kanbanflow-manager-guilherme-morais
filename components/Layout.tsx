@@ -20,7 +20,7 @@ const Layout: React.FC<LayoutProps> = ({ children, activeTab, onNavigate }) => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex font-sans text-slate-900">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex font-sans text-slate-900 dark:text-white transition-colors duration-300">
       {/* Sidebar */}
       <aside className="w-72 bg-slate-900 text-white flex-shrink-0 flex flex-col shadow-xl z-20">
         <div className="p-6 border-b border-slate-800 flex items-center gap-3">
@@ -191,10 +191,10 @@ const Layout: React.FC<LayoutProps> = ({ children, activeTab, onNavigate }) => {
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 flex flex-col h-screen overflow-hidden bg-slate-50 relative">
-        <header className="bg-white border-b border-slate-200 px-8 py-5 flex justify-between items-center shadow-sm z-10">
+      <main className="flex-1 flex flex-col h-screen overflow-hidden bg-slate-50 dark:bg-slate-900 relative transition-colors duration-300">
+        <header className="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 px-8 py-5 flex justify-between items-center shadow-sm z-10 transition-colors duration-300">
           <div>
-            <h2 className="text-2xl font-bold text-slate-800">
+            <h2 className="text-2xl font-bold text-slate-800 dark:text-white">
                 {activeTab === 'users' 
                   ? 'Team Management' 
                   : activeTab === 'project' 
@@ -211,7 +211,7 @@ const Layout: React.FC<LayoutProps> = ({ children, activeTab, onNavigate }) => {
                   ? 'ToDo Time Estimator'
                   : 'Task Board'}
             </h2>
-            <p className="text-sm text-slate-500 mt-1">
+            <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
                 {activeTab === 'users' 
                   ? 'Manage your development team and roles' 
                   : activeTab === 'project'
@@ -232,7 +232,7 @@ const Layout: React.FC<LayoutProps> = ({ children, activeTab, onNavigate }) => {
           
           <div className="flex items-center gap-2">
              <NotificationDropdown />
-             <div className="h-8 w-px bg-slate-200 mx-1"></div>
+             <div className="h-8 w-px bg-slate-200 dark:bg-slate-700 mx-1"></div>
              <SettingsDropdown />
           </div>
         </header>
