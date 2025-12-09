@@ -43,7 +43,7 @@ const CompletedTasks: React.FC = () => {
       <div className="flex items-center justify-center h-64">
         <div className="text-center">
           <div className="w-8 h-8 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-slate-500">Loading...</p>
+          <p className="text-slate-500 dark:text-slate-400">Loading...</p>
         </div>
       </div>
     );
@@ -51,12 +51,12 @@ const CompletedTasks: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
-        <h3 className="text-lg font-bold text-slate-800 mb-4">My Completed Tasks</h3>
+      <div className="bg-white dark:bg-slate-800 p-6 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+        <h3 className="text-lg font-bold text-slate-800 dark:text-white mb-4">My Completed Tasks</h3>
         
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm">
-            <thead className="bg-slate-50 text-slate-600 font-semibold border-b border-slate-200">
+            <thead className="bg-slate-50 dark:bg-slate-900/50 text-slate-600 dark:text-slate-300 font-semibold border-b border-slate-200 dark:border-slate-700">
               <tr>
                 <th className="px-4 py-3">Task</th>
                 <th className="px-4 py-3">Type</th>
@@ -66,19 +66,19 @@ const CompletedTasks: React.FC = () => {
                 <th className="px-4 py-3">Duration (days)</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-slate-100 dark:divide-slate-700">
               {tasks.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="px-4 py-12 text-center text-slate-500">
+                  <td colSpan={6} className="px-4 py-12 text-center text-slate-500 dark:text-slate-400">
                     No completed tasks yet
                   </td>
                 </tr>
               ) : (
                 tasks.map(task => (
-                  <tr key={task.id} className="hover:bg-slate-50 transition-colors">
+                  <tr key={task.id} className="hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
                     <td className="px-4 py-3">
-                      <div className="font-medium text-slate-800">{task.title}</div>
-                      <div className="text-xs text-slate-500">{task.description}</div>
+                      <div className="font-medium text-slate-800 dark:text-white">{task.title}</div>
+                      <div className="text-xs text-slate-500 dark:text-slate-400">{task.description}</div>
                     </td>
                     <td className="px-4 py-3">
                       <span 
@@ -88,15 +88,15 @@ const CompletedTasks: React.FC = () => {
                         {task.taskTypeName}
                       </span>
                     </td>
-                    <td className="px-4 py-3 text-slate-700 font-mono">{task.storyPoints}</td>
-                    <td className="px-4 py-3 text-slate-600 text-xs">
+                    <td className="px-4 py-3 text-slate-700 dark:text-slate-300 font-mono">{task.storyPoints}</td>
+                    <td className="px-4 py-3 text-slate-600 dark:text-slate-400 text-xs">
                       {task.realStartDate ? new Date(task.realStartDate).toLocaleDateString() : '-'}
                     </td>
-                    <td className="px-4 py-3 text-slate-600 text-xs">
+                    <td className="px-4 py-3 text-slate-600 dark:text-slate-400 text-xs">
                       {task.realEndDate ? new Date(task.realEndDate).toLocaleDateString() : '-'}
                     </td>
                     <td className="px-4 py-3">
-                      <span className="font-semibold text-indigo-600">{calculateDays(task)} days</span>
+                      <span className="font-semibold text-indigo-600 dark:text-indigo-400">{calculateDays(task)} days</span>
                     </td>
                   </tr>
                 ))
