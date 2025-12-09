@@ -5,6 +5,7 @@ import { useAuth } from '../context/AuthContext';
 import { useNotifications } from '../context/NotificationContext';
 import { useToast } from '../context/ToastContext';
 import { triggerConfetti } from '../utils/confetti';
+import { SkeletonKanbanBoard } from './SkeletonLoader';
 import Button from './Button';
 import { Plus, Calendar, User as UserIcon, AlertCircle, X, GripHorizontal, Trash2, Clock, TrendingUp, Search } from 'lucide-react';
 
@@ -36,6 +37,8 @@ const KanbanBoard: React.FC = () => {
     developerId: ''
   });
 
+  const [initialLoading, setInitialLoading] = useState(true);
+
   const fetchBoardData = async () => {
     if (!user) return;
     setLoading(true);
@@ -59,6 +62,7 @@ const KanbanBoard: React.FC = () => {
       setError("Failed to load board data.");
     } finally {
       setLoading(false);
+      setInitialLoading(false);
     }
   };
 
@@ -385,15 +389,8 @@ const KanbanBoard: React.FC = () => {
     );
   };
 
-  if (loading) {
-    return (
-      <div className="h-full flex items-center justify-center">
-        <div className="text-center">
-          <div className="w-8 h-8 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-slate-500">Loading board...</p>
-        </div>
-      </div>
-    );
+  if (initialLoading) {
+    return <SkeletonKanbanBoard />;
   }
 
   return (
