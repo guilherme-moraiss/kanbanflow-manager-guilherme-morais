@@ -2,11 +2,29 @@ const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
 const bcrypt = require('bcryptjs');
 
-const dbPath = path.join(__dirname, 'kanban.db');
-const db = new sqlite3.Database(dbPath);
+// Em produção (Render), usa /tmp que tem permissões de escrita
+// Em desenvolvimento, usa o diretório local
+const isProduction = process.env.NODE_ENV === 'production';
+const dbPath = isProduction 
+  ? '/tmp/kanban.db' 
+  : path.join(__dirname, 'kanban.db');
+
+console.log(`🗄️  Database path: ${dbPath}`);
+console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
+
+const db = new sqlite3.Database(dbPath, (err) => {
+  if (err) {
+    console.error('❌ Failed to connect to database:', err);
+  } else {
+    console.log('✅ Database connected successfully!');
+  }
+});
 
 const initializeDatabase = () => {
+  console.log('🔧 Initializing database...');
+  
   db.serialize(() => {
+    console.log('📋 Creating Users table...');
     db.run(`
       CREATE TABLE IF NOT EXISTS Users (
         id TEXT PRIMARY KEY,
@@ -22,6 +40,7 @@ const initializeDatabase = () => {
       )
     `);
 
+    console.log('📋 Creating TaskTypes table...');
     db.run(`
       CREATE TABLE IF NOT EXISTS TaskTypes (
         id TEXT PRIMARY KEY,
@@ -30,6 +49,7 @@ const initializeDatabase = () => {
       )
     `);
 
+    console.log('📋 Creating Tasks table...');
     db.run(`
       CREATE TABLE IF NOT EXISTS Tasks (
         id TEXT PRIMARY KEY,

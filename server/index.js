@@ -3,6 +3,9 @@ const cors = require('cors');
 const path = require('path');
 require('dotenv').config();
 
+// Import database to initialize it
+require('./database');
+
 const authRoutes = require('./routes/auth');
 const usersRoutes = require('./routes/users');
 const tasksRoutes = require('./routes/tasks');
@@ -11,8 +14,20 @@ const taskTypesRoutes = require('./routes/taskTypes');
 const app = express();
 const PORT = process.env.PORT || 3001;
 
+console.log('🚀 Starting server...');
+console.log(`📍 Environment: ${process.env.NODE_ENV || 'development'}`);
+console.log(`🔌 Port: ${PORT}`);
+
 app.use(cors());
 app.use(express.json());
+
+// Log all requests in production for debugging
+if (process.env.NODE_ENV === 'production') {
+  app.use((req, res, next) => {
+    console.log(`${req.method} ${req.path}`);
+    next();
+  });
+}
 
 // API Routes
 app.use('/api/auth', authRoutes);
@@ -34,8 +49,15 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
+// Global error handler
+app.use((err, req, res, next) => {
+  console.error('❌ Server error:', err);
+  res.status(500).json({ error: 'Internal server error', details: err.message });
+});
+
 app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
-  console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
+  console.log(`✅ Server running on http://localhost:${PORT}`);
+  console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
+  console.log(`📊 API endpoints available at /api/*`);
 });
 
