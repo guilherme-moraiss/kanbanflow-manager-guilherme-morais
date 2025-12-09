@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { UserRole } from '../types';
+import { getAvatarColor, getInitials } from '../utils/avatar';
 import { LogOut, Users, Layout as LayoutIcon, Menu, ClipboardList, CheckCircle, Tag, BarChart3, ListTodo, Calculator } from 'lucide-react';
 import NotificationDropdown from './NotificationDropdown';
 import SettingsDropdown from './SettingsDropdown';
@@ -157,23 +158,23 @@ const Layout: React.FC<LayoutProps> = ({ children, activeTab, onNavigate }) => {
         </nav>
 
         <div className="p-4 border-t border-slate-800 bg-slate-900">
-          <div className="bg-slate-800/50 rounded-xl p-3 border border-slate-700/50">
+          <div className="bg-slate-800/50 rounded-xl p-3 border border-slate-700/50 hover:border-slate-600 transition-colors">
             <div className="flex items-center gap-3 mb-3">
                 {user?.avatarUrl ? (
                     <img 
                         src={user.avatarUrl} 
                         alt={user.name} 
-                        className="w-10 h-10 rounded-full border border-white/10"
+                        className="w-10 h-10 rounded-full border-2 border-white/10 ring-2 ring-indigo-500/30"
                     />
                 ) : (
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center font-bold text-white shadow-inner border border-white/10">
-                        {user?.name.charAt(0)}
+                    <div className={`w-10 h-10 rounded-full bg-gradient-to-br ${getAvatarColor(user?.name || '')} flex items-center justify-center font-bold text-white shadow-lg border-2 border-white/20`}>
+                        {getInitials(user?.name || '')}
                     </div>
                 )}
                 <div className="overflow-hidden">
                 <p className="text-sm font-semibold truncate text-slate-200">{user?.name}</p>
                 <p className="text-xs text-slate-400 truncate capitalize flex items-center gap-1">
-                    <span className={`w-2 h-2 rounded-full ${user?.role === UserRole.MANAGER ? 'bg-purple-500' : 'bg-blue-500'}`}></span>
+                    <span className={`w-2 h-2 rounded-full ${user?.role === UserRole.MANAGER ? 'bg-purple-500 shadow-sm shadow-purple-500' : 'bg-blue-500 shadow-sm shadow-blue-500'} animate-pulse-slow`}></span>
                     {user?.role.toLowerCase()}
                 </p>
                 </div>
