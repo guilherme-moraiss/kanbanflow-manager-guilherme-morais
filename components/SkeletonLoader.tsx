@@ -2,19 +2,19 @@ import React from 'react';
 
 export const SkeletonCard: React.FC = () => {
   return (
-    <div className="bg-white dark:bg-slate-800 p-4 rounded-lg border border-slate-200 dark:border-slate-700 animate-pulse">
+    <div className="bg-white dark:bg-slate-800 p-4 rounded-lg border border-slate-200 dark:border-slate-700 overflow-hidden relative">
       <div className="flex items-center gap-2 mb-3">
-        <div className="w-2 h-2 rounded-full bg-slate-200 dark:bg-slate-700"></div>
-        <div className="h-3 bg-slate-200 dark:bg-slate-700 rounded w-20"></div>
+        <div className="w-2 h-2 rounded-full bg-slate-200 dark:bg-slate-700 animate-shimmer"></div>
+        <div className="h-3 bg-slate-200 dark:bg-slate-700 rounded w-20 animate-shimmer"></div>
       </div>
-      <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-3/4 mb-2"></div>
-      <div className="h-3 bg-slate-200 dark:bg-slate-700 rounded w-1/2 mb-4"></div>
+      <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-3/4 mb-2 animate-shimmer"></div>
+      <div className="h-3 bg-slate-200 dark:bg-slate-700 rounded w-1/2 mb-4 animate-shimmer"></div>
       <div className="flex justify-between items-center pt-3 border-t border-slate-100 dark:border-slate-700">
         <div className="flex items-center gap-2">
-          <div className="w-6 h-6 bg-slate-200 dark:bg-slate-700 rounded-full"></div>
-          <div className="h-3 bg-slate-200 dark:bg-slate-700 rounded w-16"></div>
+          <div className="w-6 h-6 bg-slate-200 dark:bg-slate-700 rounded-full animate-shimmer"></div>
+          <div className="h-3 bg-slate-200 dark:bg-slate-700 rounded w-16 animate-shimmer"></div>
         </div>
-        <div className="h-6 bg-slate-200 dark:bg-slate-700 rounded w-12"></div>
+        <div className="h-6 bg-slate-200 dark:bg-slate-700 rounded w-12 animate-shimmer"></div>
       </div>
     </div>
   );
