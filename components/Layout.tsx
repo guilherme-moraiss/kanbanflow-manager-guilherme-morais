@@ -43,11 +43,11 @@ const Layout: React.FC<LayoutProps> = ({ children, activeTab, onNavigate }) => {
               onClick={() => onNavigate('tasks')}
               className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 group ${
                 activeTab === 'tasks' 
-                  ? 'bg-indigo-600 text-white shadow-md shadow-indigo-900/20' 
-                  : 'text-slate-400 hover:bg-slate-800 hover:text-white'
+                  ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/30 scale-[1.02]' 
+                  : 'text-slate-400 hover:bg-slate-800 hover:text-white hover:scale-[1.01]'
               }`}
             >
-              <LayoutIcon className={`w-5 h-5 ${activeTab === 'tasks' ? 'text-white' : 'text-slate-500 group-hover:text-white'}`} />
+              <LayoutIcon className={`w-5 h-5 transition-transform ${activeTab === 'tasks' ? 'text-white' : 'text-slate-500 group-hover:text-white group-hover:scale-110'}`} />
               <span className="font-medium">Task Board</span>
             </button>
 
