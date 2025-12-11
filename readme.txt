@@ -7,11 +7,11 @@ INFORMAÇÕES DO GRUPO
 --------------------
 Desenvolvido por:
 - Nome: Guilherme Morais
-- Número: [SEU_NUMERO_AQUI]
+- Número: 2024240
 - Email: guilhermeetoogmorais@gmail.com
 
 Turma: Diurna
-Grupo: [NUMERO_DO_GRUPO]
+Grupo: 3
 
 ================================================================================
 1. REQUISITOS DO SISTEMA
